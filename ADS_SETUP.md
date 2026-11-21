@@ -1,46 +1,38 @@
-# Turning on real ads in ASCENT
+# Google AdSense for ASCENT
 
-ASCENT’s every-third-flight interstitial is live in the game logic, but it deliberately has **no ad-network credentials** in this repository. Without a real publisher account, it shows a clearly labelled in-game placeholder rather than pretending to be a paid ad.
+## Current implementation
 
-## Behaviour already built
+ASCENT is configured for the AdSense account selected by the site owner.
 
-- A completed game is counted only after all seven questions finish.
-- The break appears before the next flight after game 3, 6, 9, and so on.
-- The count is stored only in the visitor’s browser using local storage.
-- A visitor sees each break at most once per three-game milestone, even after refreshing the page.
-- The **CONTINUE FLIGHT** button starts the next game.
+- The AdSense loader is in `index.html` for Google’s site-verification process.
+- `ads.txt` is present at the site root with the publisher’s authorised-seller entry.
+- **Automatic Ads must remain disabled** in the AdSense dashboard.
+- The game reserves one manual, clearly labelled flight-break placement after every **2 completed games**: before games 3, 5, 7, and so on.
+- Until Google approves the site and a manual ad-unit slot is provided, the break shows an honest “review in progress” placeholder instead of a fake advertisement.
 
-## Google AdSense activation checklist
+## Next steps in AdSense
 
-1. Create and approve a Google AdSense publisher account.
-2. Use `https://playascent.online` on a stable public site after DNS and HTTPS verification finish; do not submit an unverified domain.
-3. Add a real support contact to `privacy.html` and review the privacy notice for your actual setup.
-4. Implement a consent-management solution before serving personalised ads to visitors where consent is required, including the EEA, UK, and Switzerland.
-5. Create a display-ad unit in AdSense and copy its publisher client ID and slot ID.
-6. In `index.html`, add this tiny configuration *immediately before* the existing main `<script>` tag:
+1. Confirm that `https://playascent.online` loads with HTTPS.
+2. In AdSense, open **Sites → playascent.online**.
+3. Confirm the site is connected, then choose **Request review** when Google offers it.
+4. Complete any payment, identity, tax, or ownership steps only in your own Google account. Never share that information in chat.
+5. In **Privacy & messaging**, create and publish a European regulations consent message using Google’s CMP or another Google-certified CMP before enabling personalised ads for EEA, UK, or Swiss visitors.
+6. Wait for Google’s approval. A review can take days and, in some cases, several weeks.
 
-   ```html
-   <script>
-   window.ASCENT_ADS = {
-     client: 'ca-pub-1234567890123456',
-     slot: '1234567890'
-   };
-   </script>
-   ```
+## After approval: create the manual unit
 
-   Replace both example values with the approved values from your own AdSense account. The existing game code validates the expected formats, loads the Google ad script only when both values are present, and otherwise leaves the clearly labelled placeholder in place.
+1. In AdSense, open **Ads → By ad unit → Display ads**.
+2. Name it `ASCENT — Flight Break`.
+3. Keep the unit **Responsive**.
+4. Click **Save and get code**.
+5. Send the generated snippet or its `data-ad-slot` number to the developer.
 
-7. Once Google gives you the publisher ID, add an `ads.txt` file at the site root with the exact line supplied by AdSense. A commonly used Google entry has this shape, but copy the official value from your account rather than inventing one:
+The site already knows the publisher client ID. The only missing value for a real manual ad is the ad-unit slot ID. Once it is added, paid display ads will appear only in the built-in flight break after games 2, 4, 6, and so on.
 
-   ```text
-   google.com, pub-YOUR_PUBLISHER_ID, DIRECT, f08c47fec0942fa0
-   ```
+## Do not do these things
 
-## Never do these things
-
-- Do not use somebody else’s publisher ID.
-- Do not create fake impressions or click your own ads.
-- Do not label an ad as game content or place it where a player can accidentally click it while trying to continue.
-- Do not turn on personalised ads before required consent and policy pages are ready.
-
-These steps matter both for visitors and for keeping an ad account in good standing.
+- Do not enable Auto Ads: they can place ads elsewhere in the game.
+- Do not use somebody else’s publisher ID or ad unit.
+- Do not click your own ads or ask others to click them.
+- Do not label an ad as game content or place it under the Continue button.
+- Do not enable personalised ads for European visitors before the consent message is live.
