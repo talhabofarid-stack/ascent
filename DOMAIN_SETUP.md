@@ -1,50 +1,49 @@
 # Custom-domain setup for ASCENT
 
-## Chosen target: `playascent.io`
+## Connected domain: `playascent.online`
 
-`playascent.io` is the preferred name from the options discussed. A DNS lookup on **2026-11-21** did not return a public record for either `playascent.io` or `ascentgame.io`, but that **does not prove that either domain is available to register**. Only a registrar can confirm availability and sell the domain.
+The owner has registered `playascent.online` through TransIP. This repository includes a `CNAME` file so future GitHub Pages deployments keep the domain attached.
 
-Do not add a `CNAME` file or configure GitHub Pages with this domain until the owner has bought or otherwise verified control of it. Pointing a site at a domain someone else owns can cause an avoidable configuration problem.
+## DNS records to add at TransIP
 
-## After buying `playascent.io`
+In the TransIP control panel, open **playascent.online → DNS**. Keep the existing nameservers and add these records for the apex (`@`) domain:
 
-1. Open the repository’s **Settings → Pages → Custom domain** field and enter:
+```text
+Type  Host  Value
+A     @     185.199.108.153
+A     @     185.199.109.153
+A     @     185.199.110.153
+A     @     185.199.111.153
+```
 
-   ```text
-   playascent.io
-   ```
+GitHub also supports these optional IPv6 `AAAA` records:
 
-2. At the domain’s DNS provider, create these four `A` records for the apex (`@`) domain:
+```text
+Type  Host  Value
+AAAA  @     2606:50c0:8000::153
+AAAA  @     2606:50c0:8001::153
+AAAA  @     2606:50c0:8002::153
+AAAA  @     2606:50c0:8003::153
+```
 
-   ```text
-   185.199.108.153
-   185.199.109.153
-   185.199.110.153
-   185.199.111.153
-   ```
+## Optional `www` address
 
-   GitHub also supports these optional IPv6 `AAAA` records:
+To make `www.playascent.online` work too, add:
 
-   ```text
-   2606:50c0:8000::153
-   2606:50c0:8001::153
-   2606:50c0:8002::153
-   2606:50c0:8003::153
-   ```
+```text
+Type   Host  Value
+CNAME  www   talhabofarid-stack.github.io.
+```
 
-3. Optionally add a `www` subdomain with this `CNAME` record:
+The CNAME value must point to `talhabofarid-stack.github.io`, **not** to the `/ascent/` path.
 
-   ```text
-   www  CNAME  talhabofarid-stack.github.io.
-   ```
+## GitHub Pages
 
-4. Wait for GitHub Pages to verify the DNS configuration, then turn on **Enforce HTTPS** in the Pages settings.
+The GitHub Pages custom-domain setting should be `playascent.online`. After DNS starts resolving, GitHub Pages will verify the configuration and issue HTTPS. Keep **Enforce HTTPS** enabled when GitHub makes it available.
 
-5. Add a `CNAME` file containing only `playascent.io` to the Pages source branch once the custom domain is verified. This prevents a later deployment from accidentally removing the configuration.
+## Status checks
 
-## Important
-
-- Keep the site live at `https://talhabofarid-stack.github.io/ascent/` until the domain is verified.
-- DNS changes can take time to propagate.
-- If a different domain is bought instead, replace `playascent.io` with that exact domain in every step above.
-- The records above are GitHub Pages’ standard IP addresses. Check GitHub’s current Pages documentation before changing DNS in case its requirements change.
+- The normal game URL remains `https://talhabofarid-stack.github.io/ascent/` until DNS propagation and GitHub verification finish.
+- DNS can take from a few minutes up to 24 hours, depending on caching.
+- Check that the domain resolves to GitHub’s addresses before expecting the custom domain to load.
+- Do not replace TransIP nameservers just to add these records.

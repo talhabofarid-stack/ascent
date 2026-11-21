@@ -13,7 +13,7 @@ ASCENT’s every-third-flight interstitial is live in the game logic, but it del
 ## Google AdSense activation checklist
 
 1. Create and approve a Google AdSense publisher account.
-2. Use the custom domain on a stable public site; do not submit an unverified domain.
+2. Use `https://playascent.online` on a stable public site after DNS and HTTPS verification finish; do not submit an unverified domain.
 3. Add a real support contact to `privacy.html` and review the privacy notice for your actual setup.
 4. Implement a consent-management solution before serving personalised ads to visitors where consent is required, including the EEA, UK, and Switzerland.
 5. Create a display-ad unit in AdSense and copy its publisher client ID and slot ID.
