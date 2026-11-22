@@ -1,75 +1,57 @@
 # Google Analytics for ASCENT
 
-## What is deployed
+## Current direct GA4 setup
 
-`index.html` contains the public Google Tag Manager container ID supplied by the owner:
+ASCENT uses the public Google Analytics 4 Measurement ID created by the owner:
 
 ```text
-GTM-NWWS89ZF
+G-G987KT8K4C
 ```
 
-ASCENT does **not** load that container until a visitor chooses **Allow analytics**. Once it is allowed, the browser starts Google Tag Manager and pushes these custom data-layer events:
+The site loads Google Analytics directly — it does **not** require a Google Tag Manager account or container. Google Analytics is loaded only after a visitor chooses **Allow analytics** on ASCENT.
 
-| Event | When it is pushed | Parameters sent by ASCENT |
+Once consent is granted, ASCENT sends the normal GA4 page view plus these custom events:
+
+| Event | When it is sent | Parameters sent by ASCENT |
 | --- | --- | --- |
 | `game_start` | A seven-question flight begins | `flight_question_count` |
 | `game_complete` | The player completes all seven questions | `flight_score`, `flight_destination`, `questions_completed` |
 
-The game deliberately does **not** send a player’s typed answer, name, email address, or account information.
+The game deliberately does **not** send a player’s typed answer, name, email address, account information, or other direct identifiers as analytics events.
 
-Page/visitor counts are collected by the normal Google tag / GA4 page-view tag configured inside Google Tag Manager. The GTM container ID alone does not create a GA4 property or send analytics anywhere; its connected Google tag must be configured and published in Google Tag Manager.
+## What the owner needs to do
 
-## One-time Google Tag Manager setup
+There is no Google Tag Manager setup, container, trigger, or event-tag configuration to create. The direct GA4 integration is already configured in the website source.
 
-Do this in the owner’s own Google account at [tagmanager.google.com](https://tagmanager.google.com/). No password, payment, tax, or identity information belongs in this repository or chat.
+After the matching site deployment is live:
 
-1. Open container **GTM-NWWS89ZF**.
-2. Create a Google Analytics 4 property and web data stream for `https://playascent.online` if one does not already exist. Copy its public Measurement ID, which begins with `G-`.
-3. In GTM, create or confirm a **Google tag** using that Measurement ID. Make it fire on **All Pages**. This produces GA4’s normal `page_view` events, which count website visits.
-4. Create a Custom Event trigger named `game_start`.
-5. Create a Google Analytics: GA4 Event tag:
-   - **Event name:** `game_start`
-   - **Configuration / Google tag:** the ASCENT GA4 Google tag
-   - **Trigger:** the `game_start` Custom Event trigger
-6. Create a second Custom Event trigger named `game_complete`.
-7. Create another GA4 Event tag:
-   - **Event name:** `game_complete`
-   - **Configuration / Google tag:** the ASCENT GA4 Google tag
-   - **Trigger:** the `game_complete` Custom Event trigger
-8. Use **Preview** in GTM and play one complete flight. Confirm that the Google tag, `game_start`, and `game_complete` tags fire once each.
-9. Click **Submit → Publish** in GTM.
+1. Open `https://playascent.online` in a private/incognito window, or clear this site’s data first.
+2. Choose **Allow analytics** in the ASCENT analytics choice.
+3. Click **Begin Ascent** to produce a `game_start` event.
+4. Finish all seven questions to produce a `game_complete` event.
+5. Open [Google Analytics](https://analytics.google.com/) and choose the **ASCENT website** property.
+6. Check **Reports → Realtime**. A page view and the game events should appear shortly after the test.
 
-### Optional event details
+The yellow “data collection is not active” message in GA4 can remain briefly after a new deployment. Realtime is the best first check; standard reports can take up to a day to populate.
 
-To show the optional score and destination in GA4 explorations, create GTM Data Layer Variables for these keys and add them as event parameters to the `game_complete` GA4 Event tag:
+## Where to see the numbers
+
+- **GA4 → Reports → Realtime**: immediate testing and current visitors.
+- **GA4 → Reports → Engagement → Events**: counts for `game_start` and `game_complete`.
+- **GA4 → Reports → Acquisition**: visitors and traffic sources.
+- **GA4 → Explore**: compare game starts with completed games to calculate a completion rate.
+
+Event counts work without extra GA4 configuration. To analyse the optional score and destination values in standard reports later, register matching event-scoped custom dimensions / metrics in **GA4 Admin → Custom definitions**:
 
 ```text
+flight_question_count
 flight_score
 flight_destination
 questions_completed
 ```
 
-For `game_start`, the optional key is:
+## Consent and advertising
 
-```text
-flight_question_count
-```
+Visitors who choose **Keep it off** are not tracked by this analytics integration. The privacy page lets them change their preference later and removes first-party GA cookies that the browser permits the page to remove.
 
-If the values should appear in standard GA4 reports, register matching custom dimensions / metrics in **GA4 Admin → Custom definitions**. Event counts work without these optional definitions.
-
-## Where to see the numbers
-
-After GTM is published and players have opted in:
-
-- **GA4 → Reports → Realtime**: check that visits and test events arrive immediately.
-- **GA4 → Reports → Engagement → Events**: `game_start` and `game_complete` event counts.
-- **GA4 → Reports → Acquisition**: website visitors, traffic channels, and campaigns.
-- **GA4 → Explore**: compare game starts with completions and calculate a completion rate.
-
-Normal GA4 reports can take up to a day to fill in. Realtime and DebugView are the best ways to confirm a test right after publishing.
-
-## Consent and privacy
-
-The site displays an analytics choice before Google Tag Manager is loaded. Visitors who choose **Keep it off** are not tracked by this integration. The privacy page lets them change their preference later and removes first-party GA cookies that the browser permits the page to remove.
-
-This keeps the analytics setup separate from advertising consent. **Do not enable AdSense Auto Ads.** Before personalised advertising is enabled for EEA, UK, or Swiss visitors, publish a suitable Google-certified CMP / Google Privacy & messaging consent solution as documented in `ADS_SETUP.md`.
+Analytics consent is separate from advertising consent. **Do not enable AdSense Auto Ads.** Before personalised advertising is enabled for EEA, UK, or Swiss visitors, publish a suitable Google-certified CMP / Google Privacy & messaging consent solution as documented in `ADS_SETUP.md`.
