@@ -202,9 +202,9 @@ body.rare-thrust .ship-trail{width:21%;height:138%;top:81%;background:linear-gra
     <section class="intro content-panel" id="intro">
       <div class="eyebrow"><span></span> A DIFFERENT KIND OF SPACE RACE</div>
       <h1>THINK RARE.<br><em>FLY FARTHER.</em></h1>
-      <p class="intro-lead">Seven prompts. 25 seconds each. Fly today’s local-date route or a rotating free flight — the less obvious your answer, the farther you climb.</p>
-      <div class="launch-actions"><button class="main-button" id="startButton" type="button"><span>BEGIN DAILY FLIGHT</span><b>↗</b></button><button class="secondary-launch" id="freeFlightButton" type="button"><span>FREE FLIGHT</span><b>↗</b></button></div>
-      <section class="mission-console" aria-label="Mission Control"><div class="mission-console-head"><span>MISSION CONTROL</span><span id="dailyLabel">LOCAL DAILY ROUTE</span></div><div class="mission-console-grid"><div><small>PERSONAL BEST</small><strong class="accent" id="missionBest">000</strong></div><div><small>TODAY’S MISSION</small><strong id="missionName">ORBITAL ECHO</strong></div><div><small>WAYPOINTS</small><strong>15 LEVELS</strong></div></div><p id="missionConsoleText">Today’s route is deterministic for this browser date. Free Flight keeps the rotating archive in motion.</p></section>
+      <p class="intro-lead">Seven prompts. 25 seconds each. Daily Flight repeats today’s fixed route; choose Free Flight for a fresh, non-repeating route from the 10,000-plus archive.</p>
+      <div class="launch-actions"><button class="main-button" id="startButton" type="button" title="The same Daily route repeats until tomorrow"><span>BEGIN DAILY FLIGHT</span><b>↗</b></button><button class="secondary-launch" id="freeFlightButton" type="button" title="Start a fresh route from the rotating archive"><span>FREE FLIGHT · NEW ROUTE</span><b>↗</b></button></div>
+      <section class="mission-console" aria-label="Mission Control"><div class="mission-console-head"><span>MISSION CONTROL</span><span id="dailyLabel">LOCAL DAILY ROUTE</span></div><div class="mission-console-grid"><div><small>PERSONAL BEST</small><strong class="accent" id="missionBest">000</strong></div><div><small>TODAY’S MISSION</small><strong id="missionName">ORBITAL ECHO</strong></div><div><small>WAYPOINTS</small><strong>15 LEVELS</strong></div></div><p id="missionConsoleText">Daily Flight stays fixed for this browser date. Choose Free Flight for a fresh route from the 10,000-plus archive.</p></section>
       <div class="intro-meta"><span>25 SECONDS</span><i></i><span>RARE ANSWERS GO FURTHER</span></div>
     </section>
     <section class="play content-panel is-hidden" id="play" aria-live="polite">
@@ -266,7 +266,7 @@ body.rare-thrust .ship-trail{width:21%;height:138%;top:81%;background:linear-gra
   <p id="analyticsConsentText">With your permission, Google Analytics helps count website visits, game starts, and completed flights. Your answer text is never sent. <a href="privacy.html">Privacy details</a></p>
   <div class="analytics-consent-actions"><button class="analytics-button" id="analyticsAcceptButton" type="button"><span class="consent-glyph" aria-hidden="true">✦</span>ALLOW ANALYTICS</button><button class="analytics-button analytics-secondary" id="analyticsRejectButton" type="button"><span class="consent-glyph" aria-hidden="true">◌</span>KEEP IT OFF</button></div>
 </section>
-<div class="modal is-hidden" id="helpModal" role="dialog" aria-modal="true" aria-labelledby="helpTitle"><div class="modal-card"><button type="button" class="modal-close" id="closeHelp" aria-label="Close">×</button><div class="eyebrow"><span></span> BEFORE YOU LAUNCH</div><h2 id="helpTitle">THE SHORT VERSION.</h2><p>Seven new prompts each flight, picked from a rotating pool. You get 25 seconds for one answer to each. Obvious answers take you a little higher. Unexpected answers take you a lot higher. When a correct answer crosses one or more ascent landmarks, each reached level gets its own checkpoint; press STILL FLYING to continue the journey. Clear spelling slips are corrected when the intended answer is unambiguous — but the answer still has to fit the prompt.</p><p>Daily Flight uses a deterministic local-date route; Free Flight uses a 10,000-plus prompt archive. Every active prompt uses a fixed offline answer set; broad auto-generated word puzzles are not used. Clear typos are corrected only against the displayed prompt’s answers and only when one correction is unambiguous. If an answer does not fit a prompt, its hint explains the exact rule. Flight Log entries stay on this device and never include your answer text. Sound effects stay off unless you switch them on; switching on plays a short test tone, then valid answers fire the thrust SFX.</p><p>Your ship climbs through real spaceflight landmarks — from the stratosphere and the Challenger disaster to Laika, Ham, Yuri Gagarin, the Moon, and beyond.</p><div class="modal-rule"></div><small>Scores and rarity ratings are hand-estimated for this offline game, not based on live players. “IQ” labels are just for fun, not an IQ test. Distances are approximate, the journey is not to scale, and historical scenes are illustrations. UFOs are fiction. Rotating Earth map: NASA/GSFC Blue Marble.</small></div></div>
+<div class="modal is-hidden" id="helpModal" role="dialog" aria-modal="true" aria-labelledby="helpTitle"><div class="modal-card"><button type="button" class="modal-close" id="closeHelp" aria-label="Close">×</button><div class="eyebrow"><span></span> BEFORE YOU LAUNCH</div><h2 id="helpTitle">THE SHORT VERSION.</h2><p>Seven new prompts each flight, picked from a rotating pool. You get 25 seconds for one answer to each. Obvious answers take you a little higher. Unexpected answers take you a lot higher. When a correct answer crosses one or more ascent landmarks, each reached level gets its own checkpoint; press STILL FLYING to continue the journey. Clear spelling slips are corrected when the intended answer is unambiguous — but the answer still has to fit the prompt.</p><p>Daily Flight deliberately repeats its deterministic seven-prompt local-date route until tomorrow; choose Free Flight for a fresh route from the 10,000-plus prompt archive. Every active prompt uses a fixed offline answer set; broad auto-generated word puzzles are not used. Clear typos are corrected only against the displayed prompt’s answers and only when one correction is unambiguous. If an answer does not fit a prompt, its hint explains the exact rule. Flight Log entries stay on this device and never include your answer text. Sound effects stay off unless you switch them on; switching on plays a short test tone, then valid answers fire the thrust SFX.</p><p>Your ship climbs through real spaceflight landmarks — from the stratosphere and the Challenger disaster to Laika, Ham, Yuri Gagarin, the Moon, and beyond.</p><div class="modal-rule"></div><small>Scores and rarity ratings are hand-estimated for this offline game, not based on live players. “IQ” labels are just for fun, not an IQ test. Distances are approximate, the journey is not to scale, and historical scenes are illustrations. UFOs are fiction. Rotating Earth map: NASA/GSFC Blue Marble.</small></div></div>
 <div class="modal is-hidden" id="flightLogModal" role="dialog" aria-modal="true" aria-labelledby="flightLogTitle"><div class="modal-card flight-log-card"><button type="button" class="modal-close" id="closeFlightLog" aria-label="Close flight log">×</button><div class="eyebrow"><span></span> MISSION CONTROL / LOCAL ARCHIVE</div><h2 id="flightLogTitle">FLIGHT<br><em>LOG.</em></h2><p>Completed routes are stored only on this device. They are never sent with your answers or analytics.</p><div class="flight-log-summary" id="flightLogSummary"></div><div class="flight-log-route" id="flightLogRoute" aria-label="Ascent waypoint timeline"></div><ol class="flight-log-list" id="flightLogList"></ol><p class="flight-log-note">Daily Flight is a deterministic local-date mission, not an online leaderboard.</p></div></div>
 <script>(() => {
 'use strict';
@@ -455,24 +455,6 @@ Kiribati|95
 Palau|96
 Nauru|98
 Tuvalu|100`, 'One country, not just an island.'),
- make('LOOK UP','Name a type of cloud.',`
-cumulus|26
-cirrus|31
-stratus|35
-cumulonimbus|40
-nimbostratus|55
-stratocumulus|58
-altocumulus|61
-altostratus|63
-cirrostratus|67
-cirrocumulus|70
-lenticular|73|lenticular cloud
-mammatus|75|mammatus cloud
-noctilucent|81|noctilucent cloud
-asperitas|88|asperitas cloud
-pileus|91|pileus cloud
-contrail|95|condensation trail
-kelvin-helmholtz cloud|100|fluctus`, 'Weather nerds, this one is for you.'),
  make('ANIMALS','Name a living bird that cannot fly.',`
 penguin|25
 ostrich|29
@@ -1135,7 +1117,7 @@ function chooseDeck(){
  const ids=banks.map((_,i)=>i);
  if(!bagLoaded){
   bagLoaded=true;
-  try{const saved=JSON.parse(localStorage.getItem('ascent-question-bag-v8')||'null');if(saved&&Array.isArray(saved.bag)&&Array.isArray(saved.last)){
+  try{const saved=JSON.parse(localStorage.getItem('ascent-question-bag-v9')||'null');if(saved&&Array.isArray(saved.bag)&&Array.isArray(saved.last)){
    questionBag=[...new Set(saved.bag.filter(i=>Number.isInteger(i)&&i>=0&&i<banks.length))];
    lastPlayed=[...new Set(saved.last.filter(i=>Number.isInteger(i)&&i>=0&&i<banks.length))];
   }}catch(e){}
@@ -1164,7 +1146,7 @@ function chooseDeck(){
   chosen.push(questionBag.splice(pos,1)[0]);
  }
  lastPlayed=chosen;
- try{localStorage.setItem('ascent-question-bag-v8',JSON.stringify({bag:questionBag,last:lastPlayed}))}catch(e){}
+ try{localStorage.setItem('ascent-question-bag-v9',JSON.stringify({bag:questionBag,last:lastPlayed}))}catch(e){}
  return chosen.map(i=>banks[i]);
 }
 function localDateKey(date=new Date()){return `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`}
@@ -1189,7 +1171,7 @@ function writeFlightLog(entries){try{localStorage.setItem(FLIGHT_LOG_KEY,JSON.st
 function storedBest(){return readStoredCounter('ascent-best')}
 function recordFlightLog(stage){const entries=readFlightLog();entries.unshift({date:localDateKey(),score,destination:stage.name,waypoint:stage.at,mode:flightMode});writeFlightLog(entries)}
 function missionForDate(dateKey=localDateKey()){const names=['ORBITAL ECHO','KÁRMÁN RUN','MOONLIT VECTOR','RED HORIZON','RINGWARD SIGNAL','FAR BLUE','VOYAGER TRACE'];return names[Math.floor(seededRandom('ascent-mission-v1:'+dateKey)()*names.length)]}
-function updateMissionControl(){const key=localDateKey(),best=storedBest(),mission=missionForDate(key);$('dailyLabel').textContent='DAILY · '+formatRouteDate(key);$('missionBest').textContent=String(best).padStart(3,'0');$('missionName').textContent=mission;$('missionConsoleText').textContent='Today’s mission: '+mission+'. The local-date route is deterministic; Free Flight keeps the archive in motion.';updateSoundButton()}
+function updateMissionControl(){const key=localDateKey(),best=storedBest(),mission=missionForDate(key);$('dailyLabel').textContent='DAILY · '+formatRouteDate(key);$('missionBest').textContent=String(best).padStart(3,'0');$('missionName').textContent=mission;$('missionConsoleText').textContent='Today’s mission: '+mission+'. Daily Flight stays fixed for this local date; Free Flight draws a fresh route from the 10,000-plus archive.';updateSoundButton()}
 function renderFlightLog(){
  const entries=readFlightLog(),highestEntry=entries.reduce((best,entry)=>entry.waypoint>(best?.waypoint??0)?entry:best,null),highestAt=Math.max(score,highestEntry?.waypoint||0),currentAt=state==='intro'?0:current().at,best=storedBest(),furthest=(highestEntry&&landmarks.find(stage=>stage.at===highestEntry.waypoint))||landmarks[0];
  $('flightLogSummary').innerHTML=`<div><small>MISSIONS LOGGED</small><strong>${String(entries.length).padStart(2,'0')}</strong></div><div><small>PERSONAL BEST</small><strong class="accent">${String(best).padStart(3,'0')}</strong></div><div><small>FURTHEST WAYPOINT</small><strong>${escapeHTML(furthest.name.toUpperCase())}</strong></div>`;
