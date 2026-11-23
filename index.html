@@ -266,7 +266,7 @@ body.rare-thrust .ship-trail{width:21%;height:138%;top:81%;background:linear-gra
   <p id="analyticsConsentText">With your permission, Google Analytics helps count website visits, game starts, and completed flights. Your answer text is never sent. <a href="privacy.html">Privacy details</a></p>
   <div class="analytics-consent-actions"><button class="analytics-button" id="analyticsAcceptButton" type="button"><span class="consent-glyph" aria-hidden="true">✦</span>ALLOW ANALYTICS</button><button class="analytics-button analytics-secondary" id="analyticsRejectButton" type="button"><span class="consent-glyph" aria-hidden="true">◌</span>KEEP IT OFF</button></div>
 </section>
-<div class="modal is-hidden" id="helpModal" role="dialog" aria-modal="true" aria-labelledby="helpTitle"><div class="modal-card"><button type="button" class="modal-close" id="closeHelp" aria-label="Close">×</button><div class="eyebrow"><span></span> BEFORE YOU LAUNCH</div><h2 id="helpTitle">THE SHORT VERSION.</h2><p>Seven new prompts each flight, picked from a rotating pool. You get 25 seconds for one answer to each. Obvious answers take you a little higher. Unexpected answers take you a lot higher. When a correct answer crosses one or more ascent landmarks, each reached level gets its own checkpoint; press STILL FLYING to continue the journey. Clear spelling slips are corrected when the intended answer is unambiguous — but the answer still has to fit the prompt.</p><p>Daily Flight uses a deterministic local-date route; Free Flight uses the rotating archive. Flight Log entries stay on this device and never include your answer text. Sound effects stay off unless you switch them on; switching on plays a short test tone, then valid answers fire the thrust SFX.</p><p>Your ship climbs through real spaceflight landmarks — from the stratosphere and the Challenger disaster to Laika, Ham, Yuri Gagarin, the Moon, and beyond.</p><div class="modal-rule"></div><small>Scores and rarity ratings are hand-estimated for this offline game, not based on live players. “IQ” labels are just for fun, not an IQ test. Distances are approximate, the journey is not to scale, and historical scenes are illustrations. UFOs are fiction. Rotating Earth map: NASA/GSFC Blue Marble.</small></div></div>
+<div class="modal is-hidden" id="helpModal" role="dialog" aria-modal="true" aria-labelledby="helpTitle"><div class="modal-card"><button type="button" class="modal-close" id="closeHelp" aria-label="Close">×</button><div class="eyebrow"><span></span> BEFORE YOU LAUNCH</div><h2 id="helpTitle">THE SHORT VERSION.</h2><p>Seven new prompts each flight, picked from a rotating pool. You get 25 seconds for one answer to each. Obvious answers take you a little higher. Unexpected answers take you a lot higher. When a correct answer crosses one or more ascent landmarks, each reached level gets its own checkpoint; press STILL FLYING to continue the journey. Clear spelling slips are corrected when the intended answer is unambiguous — but the answer still has to fit the prompt.</p><p>Daily Flight uses a deterministic local-date route; Free Flight uses the rotating archive. Every active prompt has a hand-curated offline answer set; broad auto-generated word puzzles are not used. If an answer does not fit a prompt, its hint explains the exact rule. Flight Log entries stay on this device and never include your answer text. Sound effects stay off unless you switch them on; switching on plays a short test tone, then valid answers fire the thrust SFX.</p><p>Your ship climbs through real spaceflight landmarks — from the stratosphere and the Challenger disaster to Laika, Ham, Yuri Gagarin, the Moon, and beyond.</p><div class="modal-rule"></div><small>Scores and rarity ratings are hand-estimated for this offline game, not based on live players. “IQ” labels are just for fun, not an IQ test. Distances are approximate, the journey is not to scale, and historical scenes are illustrations. UFOs are fiction. Rotating Earth map: NASA/GSFC Blue Marble.</small></div></div>
 <div class="modal is-hidden" id="flightLogModal" role="dialog" aria-modal="true" aria-labelledby="flightLogTitle"><div class="modal-card flight-log-card"><button type="button" class="modal-close" id="closeFlightLog" aria-label="Close flight log">×</button><div class="eyebrow"><span></span> MISSION CONTROL / LOCAL ARCHIVE</div><h2 id="flightLogTitle">FLIGHT<br><em>LOG.</em></h2><p>Completed routes are stored only on this device. They are never sent with your answers or analytics.</p><div class="flight-log-summary" id="flightLogSummary"></div><div class="flight-log-route" id="flightLogRoute" aria-label="Ascent waypoint timeline"></div><ol class="flight-log-list" id="flightLogList"></ol><p class="flight-log-note">Daily Flight is a deterministic local-date mission, not an online leaderboard.</p></div></div>
 <script>(() => {
 'use strict';
@@ -388,12 +388,15 @@ Mauritania|83
 Micronesia|100|federated states of micronesia
 Marshall Islands|93`, 'Use its commonly used English name.'),
  make('MUSIC','Name an instrument you blow into.',`
-flute|27
-trumpet|29
-saxophone|30|sax
-clarinet|37
-harmonica|38
-recorder|42
+flute|27|fluit,whistle
+trumpet|29|trompet
+saxophone|30|sax,saxofoon
+clarinet|37|klarinet
+harmonica|38|mouth organ,mondharmonica
+recorder|42|blokfluit
+accordion|45
+melodica|47
+organ|48|pipe organ
 oboe|49
 trombone|50
 tuba|52
@@ -805,7 +808,7 @@ John Young|70|young
 Charles Duke|75|duke
 Gene Cernan|81|eugene cernan,cernan
 Harrison Schmitt|100|schmitt`, 'Twelve people have done it.'),
- make('SPACE HISTORY','Name an animal that went to space.',`
+ make('SPACE HISTORY','Name a famous named animal that went to space.',`
 Laika|25|laika the dog
 Ham|29|ham the chimpanzee
 Enos|38|enos the chimpanzee
@@ -968,7 +971,6 @@ const fruitLetters={
  O:'orange;olive;oroblanco;olallieberry;osage orange',
  S:'strawberry;starfruit;soursop;satsuma;sapodilla;sugar apple;salak;serviceberry'
 };
-const extraFruits='apple;apricot;avocado;date;fig;kiwi;lime;lychee;nectarine;orange;raspberry;redcurrant;watermelon;grapefruit;passion fruit;persimmon;plum;pomegranate'.split(';');
 for(const [letter,names] of Object.entries(fruitLetters))addNames('FOOD',`Name a fruit starting with ${letter}.`,names,'Botanically or culinarily a fruit.');
 const animalLetters={
  B:'bear;bat;bee;butterfly;buffalo;beaver;badger;baboon;bison;beetle;bobcat;barracuda;bonobo;bandicoot',
@@ -977,7 +979,6 @@ const animalLetters={
  S:'snake;shark;sheep;seal;sloth;skunk;squid;scorpion;salamander;starfish;sea otter;stoat;sifaka',
  T:'tiger;turtle;turkey;toad;trout;tuna;tapir;toucan;tarantula;tortoise;tamarin'
 };
-const extraAnimals='ant;alligator;alpaca;axolotl;deer;dolphin;donkey;dragonfly;elephant;emu;ferret;flamingo;fox;frog;giraffe;goat;gorilla;hedgehog;hippopotamus;horse;hyena;iguana;jaguar;kangaroo;koala;lamb;lemur;leopard;lion;lizard;llama;lobster;lynx;manatee;mole;moose;otter;owl;rabbit;raccoon;rat;reindeer;rhino;walrus;weasel;wolf;wombat;yak;zebra;Laika;Ham;Enos'.split(';');
 for(const [letter,names] of Object.entries(animalLetters))addNames('ANIMALS',`Name an animal starting with ${letter}.`,names,'Specific animals beat obvious ones.');
 const birdLetters={
  B:'blackbird;blue jay;barn owl;bald eagle;budgerigar;blue tit;buzzard;bittern;bowerbird',
@@ -1035,7 +1036,7 @@ addNames('HISTORY','Name a country that has hosted the Summer Olympics.','United
 addNames('ANCIENT WORLD','Name a god or goddess from Greek mythology.','Zeus;Athena;Poseidon;Hades;Aphrodite;Apollo;Artemis;Ares;Hera;Hermes;Demeter;Dionysus;Hephaestus;Hestia;Persephone;Hecate;Pan;Eros;Nike;Iris;Nemesis;Hypnos;Thanatos;Selene;Helios','Greek names, not their Roman equivalents.');
 addNames('LOOK UP','Name a constellation of the zodiac.','Leo;Gemini;Cancer;Virgo;Aries;Taurus;Pisces;Scorpius;Sagittarius;Libra;Capricornus;Aquarius','The astronomical constellation name counts.');
 addNames('OUT THERE','Name a planet with rings.','Saturn;Jupiter;Uranus;Neptune','All four giant planets have ring systems.');
-addNames('SCIENCE','Name a unit of time shorter than a day.','hour;minute;second;millisecond;microsecond;nanosecond;picosecond;femtosecond;attosecond;zein?','Units, not numbers.');
+addNames('SCIENCE','Name a unit of time shorter than a day.','hour;minute;second;millisecond;microsecond;nanosecond;picosecond;femtosecond;attosecond;zeptosecond;yoctosecond','Units, not numbers.');
 addNames('ANIMALS','Name an animal in the Chinese zodiac.','dragon;rat;ox;tiger;rabbit;snake;horse;sheep;monkey;rooster;dog;pig','One of the twelve zodiac animals.');
 addNames('ANATOMY','Name a body part starting with T.','toe;tooth;tongue;thumb;thigh;temple;tonsil;tendon;trachea;tibia;thorax;tailbone;thyroid;tear duct;tympanum','Everyday and anatomical names count.');
 addNames('ODDLY SPECIFIC','Name something you can fold.','paper;clothes;shirt;towel;napkin;blanket;map;letter;card;chair;table;umbrella;tent;stroller;fan;wallet;scarf;origami;pizza;omelette','A real fold, not just a bend.');
@@ -1044,9 +1045,9 @@ addNames('AROUND THE HOUSE','Name something at home that runs on batteries.','re
 addNames('EVERYDAY OBJECTS','Name a tool starting with H.','hammer;hacksaw;hatchet;hoe;hedge trimmer;hex key;hole punch;heat gun;hand drill;hand saw;hand plane;hand trowel;hydraulic jack;honing stone','A tool, not just an object.');
 addNames('FOOD','Name a food made with eggs.','omelette;cake;scrambled eggs;pancakes;quiche;custard;mayonnaise;meringue;frittata;French toast;eggnog;challah;carbonara;flan;hollandaise;lemon curd;shakshuka;tamago;chawanmushi','Eggs need to be a real ingredient.');
 addNames('FOOD','Name a dish whose name includes a place.','New York cheesecake;Chicago deep dish pizza;California roll;Buffalo wings;Vienna sausage;Boston cream pie;French toast;Greek salad;Turkish delight;German chocolate cake;Swiss roll;Salisbury steak;Belgian waffles;Florentine steak;Neapolitan pizza;Peking duck','A place name in the dish’s usual English name.');
-addNames('MUSIC','Name a musical instrument with strings.','guitar;violin;piano;harp;ukulele;cello;banjo;viola;double bass;mandolin;sitar;lyre;lute;zither;harpsichord;dulcimer;shamisen;erhu;balalaika;bouzouki','Strings can be plucked, bowed, or struck.');
-addNames('MUSIC','Name a percussion instrument.','drum;cymbals;tambourine;triangle;xylophone;maracas;bongos;conga;snare drum;gong;vibraphone;castanets;claves;kalimba;guiro;djembe;timpani;steelpan;woodblock','Strike, shake, or scrape it.');
-addNames('SPORT','Name a sport played with a ball and a net.','soccer;basketball;volleyball;tennis;table tennis;handball;water polo;netball;pickleball;padel;beach volleyball;footvolley;sepak takraw','Both a ball and a net are needed.');
+addNames('MUSIC','Name a musical instrument with strings.','guitar|gitaar,acoustic guitar,electric guitar,classical guitar,bass guitar;violin|viool;piano|grand piano,upright piano;harp;ukulele;cello;banjo;viola|altviool;double bass|contrabas;mandolin;sitar;lyre;lute;zither;harpsichord;dulcimer;shamisen;erhu;balalaika;bouzouki','Strings can be plucked, bowed, or struck. Guitar, piano, and violin all count.');
+addNames('MUSIC','Name a percussion instrument.','drum|drums,drum kit,drum set,trommel,drumstel;cymbals|bekken,bekkens;tambourine;triangle;xylophone;maracas;bongos;conga;snare drum|snare;gong;vibraphone;castanets;claves;kalimba;guiro;djembe;timpani;steelpan|steel drum;woodblock;cabasa;shaker;tabla','Strike, shake, or scrape it. Drums, cymbals, and shakers all count.');
+addNames('SPORT','Name a sport played with a ball and a net.','soccer|football,voetbal;basketball;volleyball;tennis;table tennis|ping pong,tafeltennis;handball;water polo;netball;pickleball;padel;beach volleyball;footvolley;sepak takraw','Both a ball and a net are needed.');
 addNames('SPACE HISTORY','Name a spacecraft that carried people to the Moon.','Apollo 8;Apollo 10;Apollo 11;Apollo 12;Apollo 13;Apollo 14;Apollo 15;Apollo 16;Apollo 17','Crewed Apollo missions that reached the Moon.');
 addNames('CULTURE','Name a novel by Jane Austen.','Pride and Prejudice;Sense and Sensibility;Emma;Persuasion;Mansfield Park;Northanger Abbey','Her six completed novels.');
 addNames('CULTURE','Name a Shakespeare tragedy.','Hamlet;Macbeth;Romeo and Juliet;Othello;King Lear;Julius Caesar;Antony and Cleopatra;Coriolanus;Titus Andronicus;Timon of Athens','An established tragedy, not a comedy.');
@@ -1056,126 +1057,42 @@ addNames('SCIENCE','Name a planet, other than Earth, with at least one moon.','M
 addNames('ODDLY SPECIFIC','Name something that has a tail but no legs.','snake;fish;shark;whale;dolphin;eel;tadpole;comet;kite;airplane;helicopter;coin;letter Q;meteor;stingray','Living things and objects count.');
 addNames('ODDLY SPECIFIC','Name something that might have a handle.','door;cup;pot;pan;suitcase;umbrella;bag;drawer;bucket;broom;spoon;knife;frying pan;teapot;axe;shovel;briefcase;shopping cart;cabinet','An actual part you can grip.');
 
-// Generated offline prompts stay checkable against curated answer lists.
-// The combination space is large, but it is deliberately finite: no fake AI scoring.
-const featuredCount=banks.length; // The original and hand-picked prompts get room on each flight.
-const allElements='hydrogen;helium;lithium;beryllium;boron;carbon;nitrogen;oxygen;fluorine;neon;sodium;magnesium;aluminum;silicon;phosphorus;sulfur;chlorine;argon;potassium;calcium;scandium;titanium;vanadium;chromium;manganese;iron;cobalt;nickel;copper;zinc;gallium;germanium;arsenic;selenium;bromine;krypton;rubidium;strontium;yttrium;zirconium;niobium;molybdenum;technetium;ruthenium;rhodium;palladium;silver;cadmium;indium;tin;antimony;tellurium;iodine;xenon;cesium;barium;lanthanum;cerium;praseodymium;neodymium;promethium;samarium;europium;gadolinium;terbium;dysprosium;holmium;erbium;thulium;ytterbium;lutetium;hafnium;tantalum;tungsten;rhenium;osmium;iridium;platinum;gold;mercury;thallium;lead;bismuth;polonium;astatine;radon;francium;radium;actinium;thorium;protactinium;uranium;neptunium;plutonium;americium;curium;berkelium;californium;einsteinium;fermium;mendelevium;nobelium;lawrencium;rutherfordium;dubnium;seaborgium;bohrium;hassium;meitnerium;darmstadtium;roentgenium;copernicium;nihonium;flerovium;moscovium;livermorium;tennessine;oganesson'.split(';');
-const moreCapitals='Abuja;Accra;Addis Ababa;Algiers;Amman;Amsterdam;Ankara;Antananarivo;Apia;Ashgabat;Asmara;Astana;Asunción;Athens;Freetown;Funafuti;Georgetown;Gaborone;Guatemala City;Hanoi;Harare;Havana;Helsinki;Honiara;Islamabad;Jakarta;Jerusalem;Juba;Kathmandu;Kigali;Kingston;Kinshasa;Kampala;Kyiv;Kuala Lumpur;Khartoum;Kuwait City;Luanda;Lomé;Majuro;Managua;Maseru;Mbabane;Oslo;Ottawa;Ouagadougou;Palikir;Port of Spain;Port Vila;Praia;Pretoria;Quito;Rabat;Reykjavík;Riyadh;Riga;Rome;Roseau;Saint John’s;San Marino;Sana’a;São Tomé;Tegucigalpa;Ulaanbaatar;Valletta;Vatican City;Victoria;Vienna;Vientiane;Vilnius;Warsaw;Washington D.C.;Wellington;Windhoek;Yaoundé;Zagreb'.split(';');
-// Broader everyday catalogues make generated prompts much less likely to reject a valid answer.
-const extraBirds='albatross;auk;avocet;bluebird;brant;chough;dove;duck;eagle;egret;falcon;finch;flamingo;frigatebird;gannet;goose;grouse;gull;hawk;heron;hoopoe;hummingbird;ibis;jackdaw;jay;kestrel;kingfisher;kite;lapwing;lark;magpie;mallard;nightingale;oriole;osprey;parakeet;partridge;peafowl;petrel;quail;raven;robin;rook;shrike;skylark;swift;tern;thrush;vulture;warbler;woodpecker;wren'.split(';');
-const extraFruitsWide='ackee;acai;barberry;black sapote;breadfruit;canistel;cape gooseberry;damson;durian;feijoa;goji berry;grape;granadilla;guava;honeydew;huckleberry;jabuticaba;jackfruit;jujube;kaki;kaki fruit;kumquat;loganberry;longan;loquat;mandarin;maracuja;mulberry;olive;papaya;pineapple;pitaya;plantain;pomelo;prickly pear;quince;rambutan;salak;soursop;starfruit;tamarind;tangerine;ugli fruit;yuzu'.split(';');
-const extraVegetables='artichoke;asparagus;aubergine;bean;bell pepper;bok choy;broccoli;butternut squash;cassava;chili pepper;chives;daikon;edamame;eggplant;fennel;garlic;ginger;green bean;kale;kohlrabi;leek;lettuce;okra;onion;radish;rocket;rutabaga;soybean;turnip;yam;zucchini'.split(';');
-const extraInstruments='accordion;acoustic guitar;bass guitar;bass drum;bugle;double bass;electric guitar;harmonium;harpsichord;melodica;organ;recorder;slide whistle;tabla;ukulele;viola;violin;woodblock'.split(';');
-const extraGemstones='bloodstone;cat’s eye;chalcedony;chrysoprase;coral;diopside;fluorite;hematite;jadeite;jasper;lapis lazuli;malachite;obsidian;onyx;rhodochrosite;rose quartz;smoky quartz;sodalite;sunstone;tiger’s eye;zircon'.split(';');
-const extraConstellations='Andromeda;Antlia;Apus;Aquarius;Aquila;Ara;Aries;Auriga;Boötes;Caelum;Canis Major;Canis Minor;Carina;Centaurus;Cepheus;Chamaeleon;Circinus;Columba;Coma Berenices;Corona Australis;Corona Borealis;Corvus;Crater;Crux;Delphinus;Dorado;Draco;Equuleus;Eridanus;Fornax;Grus;Hercules;Horologium;Hydra;Hydrus;Indus;Lacerta;Leo;Leo Minor;Lepus;Libra;Lupus;Lynx;Lyra;Mensa;Microscopium;Monoceros;Musca;Norma;Octans;Ophiuchus;Orion;Pavo;Pegasus;Phoenix;Pictor;Piscis Austrinus;Puppis;Pyxis;Reticulum;Sagitta;Scutum;Serpens;Sextans;Sculptor;Telescopium;Triangulum;Tucana;Ursa Major;Ursa Minor;Vela;Virgo;Volans;Vulpecula'.split(';');
-const extraMoons='Aegaeon;Aitne;Albiorix;Ariel;Atlas;Bianca;Caliban;Calypso;Carme;Cressida;Despina;Elara;Epimetheus;Helene;Himalia;Hyperion;Janus;Juliet;Leda;Larissa;Metis;Naiad;Neso;Ophelia;Pandora;Pan;Pasiphae;Portia;Proteus;Psamathe;Puck;Sao;Sinope;Telesto;Thebe;Thalassa;Umbriel'.split(';');
-const extraTrees='acacia;alder;apple tree;ash;aspen;avocado tree;cedar;cherry tree;elm;fir;hawthorn;holly;larch;lemon tree;lime tree;oak;orange tree;peach tree;pear tree;pine;plane tree;plum tree;poplar;redwood;rowan;willow;yew'.split(';');
-const extraPasta='angel hair;cannelloni;casarecce;cavatelli;ditalini;gnocchi;manicotti;mezze penne;pastina;tortellini;tortelloni;vermicelli;ziti'.split(';');
-const extraClouds='cirrus fibratus;funnel cloud;fog;nacreous cloud;pyrocumulus;roll cloud;scud cloud;shelf cloud;wall cloud'.split(';');
-function poolFromGroups(groups){return Object.values(groups).flatMap(row=>row.split(';').map(s=>s.trim()))}
-function poolFromPrompt(prompt){return (banks.find(b=>b.prompt===prompt)?.answers||[]).map(a=>a.name)}
-function uniqueNames(names){const seen=new Set();return names.filter(name=>{const key=name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]/g,'');if(seen.has(key))return false;seen.add(key);return true})}
-const corpora=[
- ['COUNTRIES','a country',poolFromGroups(countryLetters).concat(poolFromPrompt('Name a country starting with M.'),'France','Finland','Fiji','Denmark','Djibouti','Dominica','Dominican Republic','Haiti','Honduras','Hungary','Japan','Jamaica','Jordan','Romania','Russia','Rwanda','Yemen','Zambia','Zimbabwe','Vietnam','Vanuatu','Vatican City','Oman','Qatar')],
- ['CAPITALS','a capital city',poolFromGroups(capitalLetters).concat(poolFromPrompt('Name a capital city starting with B.'),moreCapitals)],
- ['SCIENCE','a chemical element',allElements],
- ['ANIMALS','an animal',poolFromGroups(animalLetters).concat(extraAnimals,poolFromPrompt('Name an animal with stripes.'),poolFromPrompt('Name an animal with a shell.'))],
- ['BIRDS','a bird',poolFromGroups(birdLetters).concat(extraBirds,poolFromPrompt('Name a living bird that cannot fly.'))],
- ['FOOD','a fruit',poolFromGroups(fruitLetters).concat(extraFruits,extraFruitsWide,poolFromPrompt('Name a fruit starting with P.'),poolFromPrompt('Name a fruit that is yellow when ripe.'))],
- ['FOOD','a vegetable',poolFromGroups(vegetableLetters).concat(extraVegetables)],
- ['MUSIC','a musical instrument',poolFromGroups(instrumentLetters).concat(extraInstruments,poolFromPrompt('Name an instrument you blow into.'))],
- ['GEMSTONES','a gemstone',poolFromPrompt('Name a gemstone.').concat(extraGemstones,poolFromPrompt('Name a gemstone starting with A.'),poolFromPrompt('Name a gemstone starting with C.'))],
- ['LOOK UP','a constellation',poolFromGroups(constellationLetters).concat(extraConstellations,poolFromPrompt('Name a constellation starting with C.'))],
- ['OUT THERE','a moon',poolFromGroups(planetMoons).concat(extraMoons,poolFromPrompt('Name a moon in our solar system.'))],
- ['NATURE','a tree',poolFromGroups(treeLetters).concat(extraTrees,poolFromPrompt('Name a tree starting with C.'))],
- ['HISTORY','a U.S. president',poolFromPrompt('Name a U.S. president.')],
- ['CULTURE','a Shakespeare play',poolFromPrompt('Name a Shakespeare play.')],
- ['FOOD','a pasta shape',poolFromPrompt('Name a pasta shape.').concat(extraPasta)],
- ['LOOK UP','a cloud type',poolFromPrompt('Name a type of cloud.').concat(extraClouds)]
-];
-const existingPrompts=new Set(banks.map(b=>b.prompt.toLowerCase()));
-const letters='abcdefghijklmnopqrstuvwxyz'.split('');
-function cleanLetters(name){return name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z]/g,'')}
-const nameKey=name=>String(name).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]/g,'');
-// Previous hand-ranked answers are the best rarity signal. Word length is only a fallback.
-const rarity=new Map(),knownAliases=new Map();
-for(const bank of banks)for(const answer of bank.answers){
- const key=nameKey(answer.name);
- rarity.set(key,Math.min(rarity.get(key)??100,answer.points));
- if(answer.aliases?.length){const old=knownAliases.get(key)||[];knownAliases.set(key,[...new Set([...old,...answer.aliases])])}
-}
-for(const groups of [capitalLetters,elementLetters,animalLetters,birdLetters,fruitLetters,vegetableLetters,instrumentLetters,constellationLetters,planetMoons,treeLetters]){
- for(const row of Object.values(groups)){const names=row.split(';');names.forEach((name,i)=>{const key=nameKey(name);rarity.set(key,Math.min(rarity.get(key)??100,33+Math.round(65*Math.pow(i/Math.max(1,names.length-1),1.3))))})}
-}
-for(const collection of [extraAnimals,extraBirds,extraFruits,extraFruitsWide,extraVegetables,extraInstruments,extraGemstones,extraConstellations,extraMoons,extraTrees,extraPasta,extraClouds])for(const name of collection){const key=nameKey(name);rarity.set(key,Math.min(rarity.get(key)??100,Math.min(70,31+cleanLetters(name).length*1.6)))}
-const familiarCountries=new Set('United States;United Kingdom;China;India;Japan;France;Germany;Italy;Spain;Brazil;Canada;Australia;Russia;Mexico;Netherlands;Turkey;South Africa;Argentina;Egypt;Greece;Sweden;Switzerland;New Zealand'.split(';').map(nameKey));
-const rareCountries=new Set('Nauru;Tuvalu;Kiribati;Palau;Micronesia;Marshall Islands;Sao Tome and Principe;Comoros;Djibouti;Eswatini;Vanuatu;Timor-Leste;Saint Kitts and Nevis;Saint Vincent and the Grenadines;Antigua and Barbuda;Cabo Verde;Liechtenstein;San Marino'.split(';').map(nameKey));
-for(const [name,points] of Object.entries({oxygen:27,iron:28,gold:30,hydrogen:27,carbon:28,nitrogen:30,copper:31,silver:33,lead:39,zinc:43,helium:40,uranium:49})){rarity.set(nameKey(name),Math.min(rarity.get(nameKey(name))??100,points))}
-const extraAliases={
- [nameKey('United States')]:['USA','US','United States of America'],
- [nameKey('United Kingdom')]:['UK','Britain','Great Britain'],
- [nameKey('Côte d’Ivoire')]:['Ivory Coast','Cote d Ivoire'],
- [nameKey('Czechia')]:['Czech Republic'],
- [nameKey('Eswatini')]:['Swaziland'],
- [nameKey('Timor-Leste')]:['East Timor'],
- [nameKey('Turkey')]:['Türkiye'],
- [nameKey('aluminum')]:['aluminium']
-};
-function rarityOf(name,thing){const key=nameKey(name);if(thing==='a country'){if(rareCountries.has(key))return 96;if(familiarCountries.has(key))return Math.min(42,rarity.get(key)??42)}return rarity.get(key)??Math.min(93,59+cleanLetters(name).length*1.35)}
-function addCheckable(category,prompt,pool,test,family,thing){
- const key=prompt.toLowerCase();if(existingPrompts.has(key))return;
- const valid=pool.filter(test);if(valid.length<6)return;
- existingPrompts.add(key);
- const ordered=[...valid].sort((a,b)=>rarityOf(a,thing)-rarityOf(b,thing)||a.localeCompare(b));
- const ranks=ordered.map(name=>rarityOf(name,thing)),canonical=new Set(ordered.map(nameKey));
- banks.push({category,prompt,family,hint:'One answer. A rarer valid pick flies farther.',answers:ordered.map((name,i)=>{
-  const first=ranks.indexOf(ranks[i]),last=ranks.lastIndexOf(ranks[i]);
-  const aliases=[...new Set([...(knownAliases.get(nameKey(name))||[]),...(extraAliases[nameKey(name)]||[])])].filter(alias=>!canonical.has(nameKey(alias))||nameKey(alias)===nameKey(name));
-  return {name,points:25+Math.round(75*Math.pow(((first+last)/2)/Math.max(1,ordered.length-1),1.18)),aliases};
- })});
-}
-for(const [category,thing,source] of corpora){
- const pool=uniqueNames(source);
- // Simple, readable wordplay: don't show two of the same shape of question at once.
- for(const c of letters){
-  if('aeioursntlcmbgkvyz'.includes(c))addCheckable(category,`Name ${thing} with the letter ${c.toUpperCase()} in its name.`,pool,n=>cleanLetters(n).includes(c),'contains-letter',thing);
-  addCheckable(category,`Name ${thing} ending in ${c.toUpperCase()}.`,pool,n=>cleanLetters(n).endsWith(c),'ends-letter',thing);
- }
- for(const c of 'aeiost'.split(''))addCheckable(category,`Name ${thing} with no ${c.toUpperCase()} in its name.`,pool,n=>!cleanLetters(n).includes(c),'avoids-letter',thing);
- const countWords=n=>n.trim().split(/[\s-]+/).filter(Boolean).length;
- addCheckable(category,`Name ${thing} whose name has at least two words.`,pool,n=>countWords(n)>=2,'two-words',thing);
- addCheckable(category,`Name ${thing} whose name is one word.`,pool,n=>countWords(n)===1,'one-word',thing);
- addCheckable(category,`Name ${thing} with a double letter in its name.`,pool,n=>/([a-z])\1/.test(cleanLetters(n)),'double-letter',thing);
- for(const min of [8,10,12])addCheckable(category,`Name ${thing} with at least ${min} letters in its name.`,pool,n=>cleanLetters(n).length>=min,'long-name',thing);
- for(const min of [5,7])addCheckable(category,`Name ${thing} with fewer than ${min} letters in its name.`,pool,n=>cleanLetters(n).length<min,'short-name',thing);
- // Two-letter constraints add a large reserve of distinct, still objectively checkable prompts.
- const pairLetters='aeioprstlmn'.split('');
- for(let i=0;i<pairLetters.length;i++)for(let j=i+1;j<pairLetters.length;j++){
-  const a=pairLetters[i],b=pairLetters[j];
-  addCheckable(category,`Name ${thing} with both ${a.toUpperCase()} and ${b.toUpperCase()} in its name.`,pool,n=>{const text=cleanLetters(n);return text.includes(a)&&text.includes(b)},'two-letters',thing);
- }
- // A narrower twist that still has multiple accepted answers.
- for(const first of 'abcmspt'.split(''))for(const last of 'aensy'.split('')){
-  addCheckable(category,`Name ${thing} starting with ${first.toUpperCase()} and ending in ${last.toUpperCase()}.`,pool,n=>{const text=cleanLetters(n);return text.startsWith(first)&&text.endsWith(last)},'first-and-last',thing);
- }
-}
-
+// Flight routes deliberately use only hand-curated prompts. Broad auto-generated letter puzzles
+// were retired because a finite offline catalogue can otherwise reject a perfectly sensible answer.
+// The same rule removes subjective “anything that…” prompts whose valid answers cannot be fairly
+// exhausted offline. Every active question is covered by the response audit and an explicit answer set.
+const retiredBroadPromptTexts=new Set([
+ 'Name something starting with S that you could scoop up.','Name something in a kitchen starting with B.','Name an animal with stripes.','Name something usually sold in pairs.','Name something made of glass.','Name something in a bathroom starting with T.','Name something you can fold.','Name something with a key.','Name something at home that runs on batteries.','Name a food made with eggs.','Name a dish whose name includes a place.','Name something that has a tail but no legs.','Name something that might have a handle.'
+]);
+for(let index=banks.length-1;index>=0;index--)if(retiredBroadPromptTexts.has(banks[index].prompt))banks.splice(index,1);
+const featuredCount=banks.length;
 let deck=[],round=0,score=0,history=[],state='intro',deadline=0,timerId=null,speedId=null,rareThrustId=null,advanceTimer=null,toastTimer=null,toastHideTimer=null,whisperTimer=null,whisperHideTimer=null,rarityDockTimer=null,lastSignalSector='',unrecognized='',questionBag=[],lastPlayed=[],bagLoaded=false,pendingTurn=null,flightMode='daily',soundEnabled=false,soundContext=null;
 const AD_INTERVAL=2,AD_COUNTER_KEY='ascent-completed-flights-v1',DEBRIEF_LAST_SHOWN_KEY='ascent-last-flight-debrief-v2',FLIGHT_LOG_KEY='ascent-flight-log-v1',SOUND_KEY='ascent-sound-v1',ADSENSE_CONFIG=Object.assign({client:'ca-pub-9868427903124193',slot:''},window.ASCENT_ADS||{}),ANALYTICS_CONSENT_KEY='ascent-analytics-consent-v1',GA_MEASUREMENT_ID=String((window.ASCENT_ANALYTICS||{}).measurementId||'');
 let completedFlights=readStoredCounter(AD_COUNTER_KEY),lastDebriefAt=loadDebriefBaseline(),adScriptPromise=null,analyticsConsent=readAnalyticsConsent(),analyticsLoaded=false;
 soundEnabled=readSoundPreference();
 const norm = s => String(s).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/&/g,' and ').replace(/[^a-z0-9 ]/g,' ').replace(/\s+/g,' ').trim().replace(/^(the|a|an) /,'');
+// Explicit common-language and subtype equivalents. These are intentionally finite: they help
+// legitimate responses such as “gitaar” without turning the scorer into a guesser.
+const responseAliases=Object.freeze({
+ 'gitaar':['guitar'],'akoestische gitaar':['guitar'],'elektrische gitaar':['guitar'],'basgitaar':['guitar'],'acoustic guitar':['guitar'],'electric guitar':['guitar'],'classical guitar':['guitar'],'bass guitar':['guitar'],
+ 'viool':['violin'],'altviool':['viola'],'contrabas':['double bass'],'fluit':['flute'],'blokfluit':['recorder'],'trompet':['trumpet'],'klarinet':['clarinet'],'saxofoon':['saxophone'],'mondharmonica':['harmonica'],'doedelzak':['bagpipes'],'hoorn':['french horn'],'trommel':['drum'],'drumstel':['drum'],'drum kit':['drum'],'drum set':['drum'],'bekken':['cymbals'],'bekkens':['cymbals'],'grand piano':['piano'],'upright piano':['piano'],
+ 'voetbal':['soccer'],'tafeltennis':['table tennis'],'ping pong':['table tennis'],
+ 'nederland':['netherlands'],'duitsland':['germany'],'frankrijk':['france'],'spanje':['spain'],'italie':['italy'],'verenigde staten':['united states'],'amerika':['united states'],'verenigd koninkrijk':['united kingdom'],'engeland':['england','united kingdom'],'griekenland':['greece'],'zwitserland':['switzerland'],'oostenrijk':['austria'],'belgie':['belgium'],'tsjechie':['czechia'],'turkije':['turkey'],'nieuw zeeland':['new zealand'],'zuid korea':['south korea'],'zuid afrika':['south africa'],
+ 'aardbei':['strawberry'],'banaan':['banana'],'appel':['apple'],'peer':['pear'],'citroen':['lemon'],'ananas':['pineapple'],'sinaasappel':['orange'],'perzik':['peach'],'pruim':['plum'],'druif':['grape'],'watermeloen':['watermelon'],'granaatappel':['pomegranate'],
+ 'hond':['dog'],'kat':['cat'],'paard':['horse'],'koe':['cow'],'schaap':['sheep'],'varken':['pig'],'kip':['chicken'],'eend':['duck'],'beer':['bear'],'vos':['fox'],'slang':['snake'],'schildpad':['turtle'],'pinguin':['penguin'],'struisvogel':['ostrich'],'bij':['bee'],'vlinder':['butterfly'],'walvis':['whale'],'haai':['shark']
+});
 function variants(s){const n=norm(s);const out=[n];if(n.endsWith('ies'))out.push(n.slice(0,-3)+'y');if(n.endsWith('es'))out.push(n.slice(0,-2));if(n.endsWith('s'))out.push(n.slice(0,-1));return out}
+function responseVariants(s){const expanded=new Set(variants(s));for(const key of [...expanded])for(const equivalent of responseAliases[key]||[])for(const variant of variants(equivalent))expanded.add(variant);return[...expanded]}
 function editDistance(a,b,limit){if(Math.abs(a.length-b.length)>limit)return limit+1;let previous=Array.from({length:b.length+1},(_,i)=>i),beforePrevious=null;for(let i=1;i<=a.length;i++){const current=[i];let rowMin=current[0];for(let j=1;j<=b.length;j++){let value=Math.min(previous[j]+1,current[j-1]+1,previous[j-1]+(a[i-1]===b[j-1]?0:1));if(beforePrevious&&i>1&&j>1&&a[i-1]===b[j-2]&&a[i-2]===b[j-1])value=Math.min(value,beforePrevious[j-2]+1);current[j]=value;rowMin=Math.min(rowMin,value)}if(rowMin>limit)return limit+1;beforePrevious=previous;previous=current}return previous[b.length]}
 function typoLimit(a,b){const length=Math.max(a.length,b.length);return length>=9?2:length>=5?1:0}
-function findAnswer(text,answers){const keys=variants(text);let hit=answers.find(a=>[a.name,...a.aliases].some(alias=>variants(alias).some(v=>keys.includes(v))));if(hit)return hit;const k=norm(text);const candidates=[];for(const answer of answers){let nearest=Infinity;for(const alias of [answer.name,...answer.aliases]){const canonical=norm(alias),limit=typoLimit(k,canonical);if(!limit)continue;const distance=editDistance(k,canonical,limit);if(distance<=limit)nearest=Math.min(nearest,distance)}if(Number.isFinite(nearest))candidates.push({answer,distance:nearest})}const best=Math.min(...candidates.map(match=>match.distance));const matches=candidates.filter(match=>match.distance===best);return matches.length===1?matches[0].answer:null}
+function findAnswer(text,answers){const keys=responseVariants(text);let hit=answers.find(a=>[a.name,...a.aliases].some(alias=>variants(alias).some(v=>keys.includes(v))));if(hit)return hit;const k=norm(text);const candidates=[];for(const answer of answers){let nearest=Infinity;for(const alias of [answer.name,...answer.aliases]){const canonical=norm(alias),limit=typoLimit(k,canonical);if(!limit)continue;const distance=editDistance(k,canonical,limit);if(distance<=limit)nearest=Math.min(nearest,distance)}if(Number.isFinite(nearest))candidates.push({answer,distance:nearest})}const best=Math.min(...candidates.map(match=>match.distance));const matches=candidates.filter(match=>match.distance===best);return matches.length===1?matches[0].answer:null}
 function shuffle(xs){const a=[...xs];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 function familyOf(item){return item.family||item.prompt.replace(/starting with [A-Z]\./,'starting with *.').replace(/of (Jupiter|Saturn|Uranus|Neptune)\./,'of *.')}
 function chooseDeck(){
  const ids=banks.map((_,i)=>i);
  if(!bagLoaded){
   bagLoaded=true;
-  try{const saved=JSON.parse(localStorage.getItem('ascent-question-bag-v6')||'null');if(saved&&Array.isArray(saved.bag)&&Array.isArray(saved.last)){
+  try{const saved=JSON.parse(localStorage.getItem('ascent-question-bag-v7')||'null');if(saved&&Array.isArray(saved.bag)&&Array.isArray(saved.last)){
    questionBag=[...new Set(saved.bag.filter(i=>Number.isInteger(i)&&i>=0&&i<banks.length))];
    lastPlayed=[...new Set(saved.last.filter(i=>Number.isInteger(i)&&i>=0&&i<banks.length))];
   }}catch(e){}
@@ -1203,7 +1120,7 @@ function chooseDeck(){
   chosen.push(questionBag.splice(pos,1)[0]);
  }
  lastPlayed=chosen;
- try{localStorage.setItem('ascent-question-bag-v6',JSON.stringify({bag:questionBag,last:lastPlayed}))}catch(e){}
+ try{localStorage.setItem('ascent-question-bag-v7',JSON.stringify({bag:questionBag,last:lastPlayed}))}catch(e){}
  return chosen.map(i=>banks[i]);
 }
 function localDateKey(date=new Date()){return `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`}
@@ -1369,7 +1286,7 @@ function flashResult(earned,answer,corrected=false){
 function lockAnswer(raw,timedOut=false){
  if(state!=='play')return;
  const answer=timedOut?null:findAnswer(raw,deck[round].answers),corrected=Boolean(answer&&norm(raw)!==norm(answer.name));
- if(!timedOut&&!answer){unrecognized=raw;$('hintText').textContent='Not on our list — try another before the timer runs out.';$('hintText').style.color='#ff9ca7';$('answerInput').parentNode.style.borderColor='#ff7287';$('answerInput').select();return}
+ if(!timedOut&&!answer){unrecognized=raw;const rule=deck[round]?.hint||'Use the exact rule in the prompt and try another before the timer runs out.';$('hintText').textContent='Not accepted for this prompt. '+rule;$('hintText').style.color='#ff9ca7';$('answerInput').parentNode.style.borderColor='#ff7287';$('answerInput').select();return}
  stopTimer();$('hintText').style.color='';
  const earned=answer?answer.points:0,old=score;score=Math.min(700,score+earned);
  history.push({answer:answer?.name||'Time’s up',points:earned});
