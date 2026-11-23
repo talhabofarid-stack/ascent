@@ -212,7 +212,7 @@ body.state-play .scene-shade{background:linear-gradient(to top,#010817c9 0%,tran
   <p id="analyticsConsentText">With your permission, Google Analytics helps count website visits, game starts, and completed flights. Your answer text is never sent. <a href="privacy.html">Privacy details</a></p>
   <div class="analytics-consent-actions"><button class="analytics-button" id="analyticsAcceptButton" type="button">ALLOW ANALYTICS</button><button class="analytics-button analytics-secondary" id="analyticsRejectButton" type="button">KEEP IT OFF</button></div>
 </section>
-<div class="modal is-hidden" id="helpModal" role="dialog" aria-modal="true" aria-labelledby="helpTitle"><div class="modal-card"><button type="button" class="modal-close" id="closeHelp" aria-label="Close">×</button><div class="eyebrow"><span></span> BEFORE YOU LAUNCH</div><h2 id="helpTitle">THE SHORT VERSION.</h2><p>Seven new prompts each flight, picked from a rotating pool. You get 25 seconds for one answer to each. Obvious answers take you a little higher. Unexpected answers take you a lot higher.</p><p>Your ship climbs through real spaceflight landmarks — from the stratosphere and the Challenger disaster to Laika, Ham, Yuri Gagarin, the Moon, and beyond.</p><div class="modal-rule"></div><small>Scores are hand-estimated for this offline game, not based on live players. “IQ” labels are just for fun, not an IQ test. Distances are approximate, the journey is not to scale, and historical scenes are illustrations. UFOs are fiction. Rotating Earth map: NASA/GSFC Blue Marble.</small></div></div>
+<div class="modal is-hidden" id="helpModal" role="dialog" aria-modal="true" aria-labelledby="helpTitle"><div class="modal-card"><button type="button" class="modal-close" id="closeHelp" aria-label="Close">×</button><div class="eyebrow"><span></span> BEFORE YOU LAUNCH</div><h2 id="helpTitle">THE SHORT VERSION.</h2><p>Seven new prompts each flight, picked from a rotating pool. You get 25 seconds for one answer to each. Obvious answers take you a little higher. Unexpected answers take you a lot higher. Clear one-character typing slips are corrected when the intended answer is unambiguous — but the answer still has to fit the prompt.</p><p>Your ship climbs through real spaceflight landmarks — from the stratosphere and the Challenger disaster to Laika, Ham, Yuri Gagarin, the Moon, and beyond.</p><div class="modal-rule"></div><small>Scores are hand-estimated for this offline game, not based on live players. “IQ” labels are just for fun, not an IQ test. Distances are approximate, the journey is not to scale, and historical scenes are illustrations. UFOs are fiction. Rotating Earth map: NASA/GSFC Blue Marble.</small></div></div>
 <script>(() => {
 'use strict';
 const $ = id => document.getElementById(id);
@@ -750,6 +750,17 @@ John Young|70|young
 Charles Duke|75|duke
 Gene Cernan|81|eugene cernan,cernan
 Harrison Schmitt|100|schmitt`, 'Twelve people have done it.'),
+ make('SPACE HISTORY','Name an animal that went to space.',`
+Laika|25|laika the dog
+Ham|29|ham the chimpanzee
+Enos|38|enos the chimpanzee
+Félicette|48|felicette
+Able|56|able the monkey
+Miss Baker|63|baker,miss baker the monkey
+Albert II|72|albert 2,albert the monkey
+Belka|82
+Strelka|87
+Gordo|100|gordo the monkey`, 'Famous named space animals count — dogs, chimps, monkeys, and cats.'),
  make('AROUND THE HOUSE','Name something in a bathroom starting with T.',`
 toilet|25
 towel|27
@@ -853,8 +864,8 @@ bracco italiano|100`, 'Breed names, not dog names.')
 ];
 // A wide rotating bank: every prompt has a curated offline answer set.
 function addNames(category,prompt,names,hint='One answer. Try a less obvious one.'){
- const list=names.split(';').map(s=>s.trim()).filter(Boolean);
- banks.push({category,prompt,hint,answers:list.map((name,i)=>({name,points:Math.min(100,25+Math.round(75*Math.pow(i/Math.max(1,list.length-1),1.25))),aliases:[]}))});
+ const list=names.split(';').map(s=>s.trim()).filter(Boolean).map(item=>{const [name,aliases='']=item.split('|');return {name:name.trim(),aliases:aliases.split(',').map(alias=>alias.trim()).filter(Boolean)}});
+ banks.push({category,prompt,hint,answers:list.map(({name,aliases},i)=>({name,points:Math.min(100,25+Math.round(75*Math.pow(i/Math.max(1,list.length-1),1.25))),aliases}))});
 }
 const countryLetters={
  A:'Afghanistan;Albania;Algeria;Andorra;Angola;Antigua and Barbuda;Argentina;Armenia;Australia;Austria;Azerbaijan',
@@ -899,8 +910,10 @@ const fruitLetters={
  C:'cherry;coconut;cranberry;cantaloupe;clementine;currant;crabapple;cherimoya;carambola',
  G:'grape;grapefruit;guava;gooseberry;golden berry;genip;gac fruit',
  M:'mango;melon;mandarin;mulberry;mangosteen;medlar;marionberry;miracle fruit',
+ O:'orange;olive;oroblanco;olallieberry;osage orange',
  S:'strawberry;starfruit;soursop;satsuma;sapodilla;sugar apple;salak;serviceberry'
 };
+const extraFruits='apple;apricot;avocado;date;fig;kiwi;lime;lychee;nectarine;orange;raspberry;redcurrant;watermelon;grapefruit;passion fruit;persimmon;plum;pomegranate'.split(';');
 for(const [letter,names] of Object.entries(fruitLetters))addNames('FOOD',`Name a fruit starting with ${letter}.`,names,'Botanically or culinarily a fruit.');
 const animalLetters={
  B:'bear;bat;bee;butterfly;buffalo;beaver;badger;baboon;bison;beetle;bobcat;barracuda;bonobo;bandicoot',
@@ -909,6 +922,7 @@ const animalLetters={
  S:'snake;shark;sheep;seal;sloth;skunk;squid;scorpion;salamander;starfish;sea otter;stoat;sifaka',
  T:'tiger;turtle;turkey;toad;trout;tuna;tapir;toucan;tarantula;tortoise;tamarin'
 };
+const extraAnimals='ant;alligator;alpaca;axolotl;deer;dolphin;donkey;dragonfly;elephant;emu;ferret;flamingo;fox;frog;giraffe;goat;gorilla;hedgehog;hippopotamus;horse;hyena;iguana;jaguar;kangaroo;koala;lamb;lemur;leopard;lion;lizard;llama;lobster;lynx;manatee;mole;moose;otter;owl;rabbit;raccoon;rat;reindeer;rhino;walrus;weasel;wolf;wombat;yak;zebra;Laika;Ham;Enos'.split(';');
 for(const [letter,names] of Object.entries(animalLetters))addNames('ANIMALS',`Name an animal starting with ${letter}.`,names,'Specific animals beat obvious ones.');
 const birdLetters={
  B:'blackbird;blue jay;barn owl;bald eagle;budgerigar;blue tit;buzzard;bittern;bowerbird',
@@ -982,7 +996,7 @@ addNames('SPACE HISTORY','Name a spacecraft that carried people to the Moon.','A
 addNames('CULTURE','Name a novel by Jane Austen.','Pride and Prejudice;Sense and Sensibility;Emma;Persuasion;Mansfield Park;Northanger Abbey','Her six completed novels.');
 addNames('CULTURE','Name a Shakespeare tragedy.','Hamlet;Macbeth;Romeo and Juliet;Othello;King Lear;Julius Caesar;Antony and Cleopatra;Coriolanus;Titus Andronicus;Timon of Athens','An established tragedy, not a comedy.');
 addNames('GEOGRAPHY','Name a country whose English name contains “and”.','Trinidad and Tobago;Bosnia and Herzegovina;Antigua and Barbuda;Saint Kitts and Nevis;Saint Vincent and the Grenadines;Sao Tome and Principe','Spell out the commonly used country name.');
-addNames('NATURE','Name a tree that grows edible fruit or nuts.','apple tree;orange tree;cherry tree;peach tree;pear tree;lemon tree;olive tree;coconut palm;almond tree;walnut tree;chestnut tree;pistachio tree;cashew tree;pecan tree;hazelnut tree;date palm;fig tree;mango tree;avocado tree','The fruit or nut can be eaten.');
+addNames('NATURE','Name a tree that grows edible fruit or nuts.','apple tree|apple;orange tree|orange;cherry tree|cherry;peach tree|peach;pear tree|pear;lemon tree|lemon;olive tree|olive;coconut palm|coconut,coconut tree;almond tree|almond;walnut tree|walnut;chestnut tree|chestnut;pistachio tree|pistachio;cashew tree|cashew;pecan tree|pecan;hazelnut tree|hazelnut;date palm|date;fig tree|fig;mango tree|mango;avocado tree|avocado','The fruit or nut can be eaten. A fruit-only answer is accepted as its tree.');
 addNames('SCIENCE','Name a planet, other than Earth, with at least one moon.','Mars;Jupiter;Saturn;Uranus;Neptune','Five planets besides Earth have moons.');
 addNames('ODDLY SPECIFIC','Name something that has a tail but no legs.','snake;fish;shark;whale;dolphin;eel;tadpole;comet;kite;airplane;helicopter;coin;letter Q;meteor;stingray','Living things and objects count.');
 addNames('ODDLY SPECIFIC','Name something that might have a handle.','door;cup;pot;pan;suitcase;umbrella;bag;drawer;bucket;broom;spoon;knife;frying pan;teapot;axe;shovel;briefcase;shopping cart;cabinet','An actual part you can grip.');
@@ -999,9 +1013,9 @@ const corpora=[
  ['COUNTRIES','a country',poolFromGroups(countryLetters).concat(poolFromPrompt('Name a country starting with M.'),'France','Finland','Fiji','Denmark','Djibouti','Dominica','Dominican Republic','Haiti','Honduras','Hungary','Japan','Jamaica','Jordan','Romania','Russia','Rwanda','Yemen','Zambia','Zimbabwe','Vietnam','Vanuatu','Vatican City','Oman','Qatar')],
  ['CAPITALS','a capital city',poolFromGroups(capitalLetters).concat(poolFromPrompt('Name a capital city starting with B.'),moreCapitals)],
  ['SCIENCE','a chemical element',allElements],
- ['ANIMALS','an animal',poolFromGroups(animalLetters).concat(poolFromPrompt('Name an animal with stripes.'),poolFromPrompt('Name an animal with a shell.'))],
+ ['ANIMALS','an animal',poolFromGroups(animalLetters).concat(extraAnimals,poolFromPrompt('Name an animal with stripes.'),poolFromPrompt('Name an animal with a shell.'))],
  ['BIRDS','a bird',poolFromGroups(birdLetters).concat(poolFromPrompt('Name a living bird that cannot fly.'))],
- ['FOOD','a fruit',poolFromGroups(fruitLetters).concat(poolFromPrompt('Name a fruit starting with P.'),poolFromPrompt('Name a fruit that is yellow when ripe.'))],
+ ['FOOD','a fruit',poolFromGroups(fruitLetters).concat(extraFruits,poolFromPrompt('Name a fruit starting with P.'),poolFromPrompt('Name a fruit that is yellow when ripe.'))],
  ['FOOD','a vegetable',poolFromGroups(vegetableLetters)],
  ['MUSIC','a musical instrument',poolFromGroups(instrumentLetters).concat(poolFromPrompt('Name an instrument you blow into.'))],
  ['GEMSTONES','a gemstone',poolFromPrompt('Name a gemstone.').concat(poolFromPrompt('Name a gemstone starting with A.'),poolFromPrompt('Name a gemstone starting with C.'))],
@@ -1084,15 +1098,15 @@ const AD_INTERVAL=2,AD_COUNTER_KEY='ascent-completed-flights-v1',DEBRIEF_LAST_SH
 let completedFlights=readStoredCounter(AD_COUNTER_KEY),lastDebriefAt=loadDebriefBaseline(),adScriptPromise=null,analyticsConsent=readAnalyticsConsent(),analyticsLoaded=false;
 const norm = s => String(s).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/&/g,' and ').replace(/[^a-z0-9 ]/g,' ').replace(/\s+/g,' ').trim().replace(/^(the|a|an) /,'');
 function variants(s){const n=norm(s);const out=[n];if(n.endsWith('ies'))out.push(n.slice(0,-3)+'y');if(n.endsWith('es'))out.push(n.slice(0,-2));if(n.endsWith('s'))out.push(n.slice(0,-1));return out}
-function editDistanceOne(a,b){if(Math.abs(a.length-b.length)>1)return false;let i=0,j=0,m=0;while(i<a.length&&j<b.length){if(a[i]===b[j]){i++;j++;continue}if(++m>1)return false;if(a.length>b.length)i++;else if(b.length>a.length)j++;else{i++;j++}}return m+(a.length-i)+(b.length-j)<=1}
-function findAnswer(text,answers){const keys=variants(text);let hit=answers.find(a=>[a.name,...a.aliases].some(alias=>variants(alias).some(v=>keys.includes(v))));if(hit)return hit;const k=norm(text);if(k.length>=6){const matches=answers.filter(a=>[a.name,...a.aliases].some(alias=>editDistanceOne(k,norm(alias))));if(matches.length===1)return matches[0]}return null}
+function editDistanceOne(a,b){if(a===b)return true;if(Math.abs(a.length-b.length)>1)return false;if(a.length===b.length){const changes=[];for(let i=0;i<a.length;i++)if(a[i]!==b[i])changes.push(i);return changes.length===1||(changes.length===2&&changes[1]===changes[0]+1&&a[changes[0]]===b[changes[1]]&&a[changes[1]]===b[changes[0]])}const longer=a.length>b.length?a:b,shorter=a.length>b.length?b:a;let i=0,j=0,skipped=false;while(i<longer.length&&j<shorter.length){if(longer[i]===shorter[j]){i++;j++;continue}if(skipped)return false;skipped=true;i++}return true}
+function findAnswer(text,answers){const keys=variants(text);let hit=answers.find(a=>[a.name,...a.aliases].some(alias=>variants(alias).some(v=>keys.includes(v))));if(hit)return hit;const k=norm(text);if(k.length>=5){const matches=answers.filter(a=>[a.name,...a.aliases].some(alias=>editDistanceOne(k,norm(alias))));if(matches.length===1)return matches[0]}return null}
 function shuffle(xs){const a=[...xs];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 function familyOf(item){return item.family||item.prompt.replace(/starting with [A-Z]\./,'starting with *.').replace(/of (Jupiter|Saturn|Uranus|Neptune)\./,'of *.')}
 function chooseDeck(){
  const ids=banks.map((_,i)=>i);
  if(!bagLoaded){
   bagLoaded=true;
-  try{const saved=JSON.parse(localStorage.getItem('ascent-question-bag-v4')||'null');if(saved&&Array.isArray(saved.bag)&&Array.isArray(saved.last)){
+  try{const saved=JSON.parse(localStorage.getItem('ascent-question-bag-v5')||'null');if(saved&&Array.isArray(saved.bag)&&Array.isArray(saved.last)){
    questionBag=[...new Set(saved.bag.filter(i=>Number.isInteger(i)&&i>=0&&i<banks.length))];
    lastPlayed=[...new Set(saved.last.filter(i=>Number.isInteger(i)&&i>=0&&i<banks.length))];
   }}catch(e){}
@@ -1120,7 +1134,7 @@ function chooseDeck(){
   chosen.push(questionBag.splice(pos,1)[0]);
  }
  lastPlayed=chosen;
- try{localStorage.setItem('ascent-question-bag-v4',JSON.stringify({bag:questionBag,last:lastPlayed}))}catch(e){}
+ try{localStorage.setItem('ascent-question-bag-v5',JSON.stringify({bag:questionBag,last:lastPlayed}))}catch(e){}
  return chosen.map(i=>banks[i]);
 }
 function escapeHTML(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
@@ -1163,20 +1177,20 @@ function progress(){let html='';for(let i=0;i<7;i++)html+=`<i class="${i<round?'
 function playRound(){show('play');const prompt=deck[round];$('roundText').textContent=`${String(round+1).padStart(2,'0')} / 07`;$('promptKind').textContent=prompt.category;$('promptText').textContent=prompt.prompt;$('hintText').textContent=prompt.hint;$('answerInput').value='';$('answerInput').disabled=false;$('answerInput').placeholder='Type your answer...';$('answerInput').parentNode.style.borderColor='';progress();deadline=performance.now()+25000;tick();timerId=setInterval(tick,100);setTimeout(()=>{if(state==='play')$('answerInput').focus({preventScroll:true})},100)}
 function start(){stopTimer();clearTimeout(advanceTimer);clearTimeout(toastTimer);clearTimeout(toastHideTimer);$('flightToast').classList.remove('visible');$('flightToast').classList.add('is-hidden');round=0;score=0;history=[];deck=chooseDeck();trackAnalytics('game_start',{flight_question_count:deck.length});show('play');playRound()}
 function ascend(){view();$('speedLines').classList.add('active');document.body.classList.add('boosting');clearTimeout(speedId);speedId=setTimeout(()=>{$('speedLines').classList.remove('active');document.body.classList.remove('boosting')},1850)}
-function flashResult(earned,answer,landmark,passed,art){
+function flashResult(earned,answer,landmark,passed,art,corrected=false){
  const toast=$('flightToast');clearTimeout(toastTimer);clearTimeout(toastHideTimer);
  $('toastPoints').textContent='+'+earned;
- $('toastLabel').textContent=answer?(earned>=95?'160 IQ ENERGY':earned>=80?'DEEP CUT':earned>=60?'NICE PULL':'ANSWER LOCKED'):'TIME’S UP';
+ $('toastLabel').textContent=answer?(corrected?'ANSWER CORRECTED':earned>=95?'160 IQ ENERGY':earned>=80?'DEEP CUT':earned>=60?'NICE PULL':'ANSWER LOCKED'):'TIME’S UP';
  const distance=distanceAt(score,current(),landmarks.find(m=>m.at>score));
  $('toastTitle').textContent=passed.length?landmark.name.toUpperCase():earned?'ASCENDING · '+distance.number+' '+distance.unit:'NO POINTS';
- $('toastFact').textContent=passed.length?landmark.caption:earned?'Look at that altitude climb.':'Keep flying. Next question is already here.';
+ $('toastFact').textContent=corrected?`Accepted as ${answer.name}.`:passed.length?landmark.caption:earned?'Look at that altitude climb.':'Keep flying. Next question is already here.';
  $('toastArt').className='toast-art'+(art?' show '+art:'');
  toast.classList.remove('is-hidden','visible');void toast.offsetWidth;toast.classList.add('visible');
  toastTimer=setTimeout(()=>{toast.classList.remove('visible');toastHideTimer=setTimeout(()=>toast.classList.add('is-hidden'),280)},2500);
 }
 function lockAnswer(raw,timedOut=false){
  if(state!=='play')return;
- const answer=timedOut?null:findAnswer(raw,deck[round].answers);
+ const answer=timedOut?null:findAnswer(raw,deck[round].answers),corrected=Boolean(answer&&norm(raw)!==norm(answer.name));
  if(!timedOut&&!answer){unrecognized=raw;$('hintText').textContent='Not on our list — try another before the timer runs out.';$('hintText').style.color='#ff9ca7';$('answerInput').parentNode.style.borderColor='#ff7287';$('answerInput').select();return}
  stopTimer();$('hintText').style.color='';
  const earned=answer?answer.points:0,old=score;score=Math.min(700,score+earned);
@@ -1186,7 +1200,7 @@ function lockAnswer(raw,timedOut=false){
  const art={140:'laika',175:'ham',210:'yuri'}[landmark.at]||(old<420&&score>=420?'ufo':'');
  if(round===6)end();else{round++;playRound()}
  if(earned>0)ascend();if(old<420&&score>=420)sendUfo();
- flashResult(earned,answer,landmark,passed,art);unrecognized='';
+ flashResult(earned,answer,landmark,passed,art,corrected);unrecognized='';
 }
 function end(){stopTimer();recordCompletedFlight();const stage=current();trackAnalytics('game_complete',{flight_score:score,flight_destination:stage.name,questions_completed:history.length});show('finish');renderFlightDebrief(stage);const rank=score>=610?'160 IQ ENERGY':score>=470?'GALAXY BRAIN':score>=300?'BIG BRAIN ENERGY':'JUST GETTING STARTED';$('finishRank').textContent=rank;$('finishTitle').innerHTML=score>=605?'YOU WENT<br><em>WAY OUT.</em>':score>=290?'THE SKY WAS<br><em>NOT THE LIMIT.</em>':'THE SKY IS<br><em>STILL WAITING.</em>';$('finishText').textContent=`${score} points. You made it to ${stage.name}. ${score>=605?'That is absurdly far.':score>=290?'Earth is a long way behind you.':'Run it back and try some stranger answers.'}`;$('finalScore').innerHTML=String(score).padStart(3,'0')+' <span>/ 700</span>';let best=score;try{best=Math.max(score,Number(localStorage.getItem('ascent-best')||0));localStorage.setItem('ascent-best',best)}catch(e){}$('bestScore').textContent=String(best).padStart(3,'0')}
 $('startButton').addEventListener('click',beginFlight);$('answerForm').addEventListener('submit',e=>{e.preventDefault();const raw=$('answerInput').value.trim();if(raw)lockAnswer(raw)});$('answerInput').addEventListener('input',()=>{$('answerInput').parentNode.style.borderColor='';$('hintText').style.color='';$('hintText').textContent=deck[round]?.hint||''});$('replayButton').addEventListener('click',beginFlight);$('analyticsAcceptButton').addEventListener('click',()=>{setAnalyticsConsent('granted');$('analyticsConsent').classList.add('is-hidden')});$('analyticsRejectButton').addEventListener('click',()=>{setAnalyticsConsent('denied');$('analyticsConsent').classList.add('is-hidden')});$('shareButton').addEventListener('click',async()=>{let text=`ASCENT ✦ ${score}/700 points. I made it to ${current().name}. Think rare. Fly farther.`;try{await navigator.clipboard.writeText(text);$('shareButton').textContent='COPIED ✓'}catch(e){$('shareButton').textContent='COPY UNAVAILABLE'}setTimeout(()=>$('shareButton').textContent='COPY RESULT',2200)});
