@@ -17,12 +17,18 @@
   <a class="back" href="index.html">← BACK TO ASCENT</a>
   <p class="eyebrow">ASCENT · PRIVACY</p>
   <h1>YOUR DATA<br><em>STAYS ON COURSE.</em></h1>
-  <p class="lede">ASCENT is a static browser game with no account or ASCENT back-end. With your permission, limited visitor and gameplay-event data goes directly to Google Analytics so the owner can understand how the game is used.</p>
+  <p class="lede">ASCENT’s solo game is a static browser game with no account. If you choose Online Versus Sprint, a Supabase room service temporarily processes the minimum game data needed to connect two players with one room code. With your permission, limited visitor and solo-gameplay-event data also goes directly to Google Analytics.</p>
   <p class="updated">LAST UPDATED: NOVEMBER 21, 2026</p>
 
   <section class="card">
     <h2>What the game stores</h2>
-    <p>ASCENT uses your browser’s local storage to remember your best score, rotate questions between flights, count completed flights, remember when a Mission Debrief was last shown, store an optional sound preference, keep a local Flight Log of date, quiz mode, score, and destination, and save your analytics choice. The Flight Log never stores typed answers. A Flight Certificate is rendered locally only when you request a download; ASCENT does not upload it or store another copy. This information stays in your browser unless you clear your browser data. It is not used to identify you by ASCENT.</p>
+    <p>ASCENT uses your browser’s local storage to remember your best score, rotate questions between flights, count completed flights, remember when a Mission Debrief was last shown, store an optional sound preference, keep a local Flight Log of date, quiz mode, score, and destination, and save your analytics choice. The Flight Log never stores typed answers. Online Versus Sprint keeps a temporary opaque room credential in this browser session so you can reconnect to an active room; it is removed when you leave the room or close the browser session. A Flight Certificate is rendered locally only when you request a download; ASCENT does not upload it or store another copy. This information stays in your browser unless you clear your browser data. It is not used to identify you by ASCENT.</p>
+  </section>
+
+  <section class="card">
+    <h2>Online Versus Sprint rooms</h2>
+    <p>When configured and you choose to create or join an Online Versus Sprint room, ASCENT sends your display name, room code, temporary opaque room credential, accepted category words, timestamps, and score to the ASCENT Supabase project. This is necessary to admit the two players, validate and count accepted words, synchronise the shared round, show scores, and reveal the result. The room service does not require an email, account, or password.</p>
+    <p>Rejected typed words stay in your browser. Accepted words are visible to the other player in your room after the round ends. Rooms are designed to expire after two hours. Do not use a real name or share a room code with anyone you do not want to play with.</p>
   </section>
 
   <section class="card">
@@ -47,7 +53,7 @@
 
   <section class="card">
     <h2>Third-party delivery</h2>
-    <p>The game is hosted through GitHub Pages. GitHub may process basic technical request data needed to deliver this website, as described in GitHub’s own privacy statement. If you allow analytics, Google Analytics is also a third-party service used to collect the limited measurements described above.</p>
+    <p>The game is hosted through GitHub Pages. GitHub may process basic technical request data needed to deliver this website, as described in GitHub’s own privacy statement. If Online Versus Sprint is configured and you use it, Supabase processes the temporary room data described above. If you allow analytics, Google Analytics is also a third-party service used to collect the limited measurements described above.</p>
   </section>
 
   <section class="card">
