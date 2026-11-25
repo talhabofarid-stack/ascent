@@ -85,7 +85,7 @@ create or replace function public.ascent_cleanup_expired_rooms()
 returns void
 language plpgsql
 security definer
-set search_path = public
+set search_path = public, extensions
 as $$
 begin
   delete from public.ascent_versus_rooms where expires_at <= now();
@@ -96,7 +96,7 @@ create or replace function public.ascent_room_state(p_room_code text, p_player_s
 returns jsonb
 language plpgsql
 security definer
-set search_path = public
+set search_path = public, extensions
 as $$
 declare
   v_room public.ascent_versus_rooms%rowtype;
@@ -188,7 +188,7 @@ create or replace function public.ascent_create_room(p_room_code text, p_player_
 returns jsonb
 language plpgsql
 security definer
-set search_path = public
+set search_path = public, extensions
 as $$
 declare
   v_room_id uuid;
@@ -220,7 +220,7 @@ create or replace function public.ascent_join_room(p_room_code text, p_player_na
 returns jsonb
 language plpgsql
 security definer
-set search_path = public
+set search_path = public, extensions
 as $$
 declare
   v_room public.ascent_versus_rooms%rowtype;
@@ -268,7 +268,7 @@ create or replace function public.ascent_start_round(p_room_code text, p_player_
 returns jsonb
 language plpgsql
 security definer
-set search_path = public
+set search_path = public, extensions
 as $$
 declare
   v_room public.ascent_versus_rooms%rowtype;
@@ -335,7 +335,7 @@ create or replace function public.ascent_submit_answer(p_room_code text, p_playe
 returns jsonb
 language plpgsql
 security definer
-set search_path = public
+set search_path = public, extensions
 as $$
 declare
   v_room public.ascent_versus_rooms%rowtype;
@@ -401,7 +401,7 @@ create or replace function public.ascent_leave_room(p_room_code text, p_player_s
 returns boolean
 language plpgsql
 security definer
-set search_path = public
+set search_path = public, extensions
 as $$
 declare
   v_room public.ascent_versus_rooms%rowtype;
@@ -443,7 +443,7 @@ create or replace function public.ascent_close_room(p_room_code text, p_player_s
 returns boolean
 language plpgsql
 security definer
-set search_path = public
+set search_path = public, extensions
 as $$
 declare
   v_room_id uuid;

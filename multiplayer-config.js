@@ -6,6 +6,6 @@
  * Never put a service_role key, database password, or any private credential in this file.
  */
 window.ASCENT_MULTIPLAYER = Object.freeze({
-  url: '',
-  anonKey: ''
+  url: 'https://wbrvwqnkelvvvqszmrmo.supabase.co',
+  anonKey: 'sb_publishable_Tz4SFBExHCuHjV1L0vX54A_S6iGn4_O'
 });
