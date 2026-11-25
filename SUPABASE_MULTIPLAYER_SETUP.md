@@ -31,11 +31,13 @@ ASCENT Versus Sprint uses short room codes for two players on separate devices. 
 The migration creates:
 
 - seven English-only sprint categories, including **FACIAL EXPRESSIONS**;
-- one room table, player table, and accepted-answer table;
+- one room table, player table (including a validated cosmetic flight-drone key), and accepted-answer table;
 - secure RPC functions for creating, joining, starting, submitting, polling, and closing a room;
 - row-level security with **no direct browser table access**.
 
 The game sends an accepted canonical word only after the browser has checked it against the displayed category. The database checks it again before awarding a point. The migration enables RLS, explicitly denies raw browser access to every table, and exposes only the narrowly scoped RPC functions that require each player’s opaque room credential.
+
+> **Existing room setup?** Also run `supabase/migrations/20261121_add_ascent_versus_drones.sql`. It adds the server-validated, room-visible cosmetic drone choice used by the current Versus screen; it does not alter scoring or past answer data.
 
 ## 3. Get the two public browser values
 
@@ -61,12 +63,13 @@ Then deploy the changed file with the rest of the Versus Sprint feature. Do **no
 
 ## How rooms work
 
+- Before opening or joining, each player selects one of six flight drones. The selection, callsign, and launch line are cosmetic only; they are visible to the other player but never affect timing, categories, or scoring.
 - A host receives a six-character code such as `N7K4QP`.
 - One guest joins with that code from another device.
 - The host starts a shared 25-second category sprint. The Supabase function selects the shared English category (avoiding the prior category when possible), and start/end timestamps plus answer acceptance are enforced by the database clock, not either player’s device clock.
 - Supabase Realtime Broadcast sends data-free “refresh” signals for faster score/state updates; the secure RPC polling fallback keeps the room correct if a browser or project blocks Broadcast. No raw game table is added to Realtime database replication.
 - Both players may score the same valid word independently; each player cannot repeat their own word.
-- Rejected input never leaves the player’s browser. Accepted canonical words, a display name, room code, score, and temporary opaque room credential are used only to run the room. The credential remains in the browser session; Supabase stores only its SHA-256 hash.
+- Rejected input never leaves the player’s browser. Accepted canonical words, a display name, selected cosmetic drone key, room code, score, and temporary opaque room credential are used only to run the room. The credential remains in the browser session; Supabase stores only its SHA-256 hash.
 - Each open browser sends a lightweight room-state heartbeat. If the other player stops responding for about 12 seconds, the lobby labels them as reconnecting and the host cannot start a fresh sprint until they return. An explicit **Leave room** removes a guest and returns the host to the one-player lobby; a host leaving closes the room for both players.
 - Rooms expire after two hours. The database cleans expired rooms when the service is used; for stricter retention, enable a scheduled Supabase cleanup that runs `select public.ascent_cleanup_expired_rooms();`.
 
@@ -74,7 +77,7 @@ Then deploy the changed file with the rest of the Versus Sprint feature. Do **no
 
 After configuration, test with two separate browsers/devices:
 
-1. Open `versus.html` on both.
+1. Open `versus.html` on both and choose different flight drones; each player should see both cosmetic drone/callsign identities in the lobby.
 2. Host creates a room and shares the code.
 3. Guest joins.
 4. Host starts a round and both see the same category/countdown.

@@ -52,6 +52,25 @@
     }
   });
 
+  const DRONES = Object.freeze({
+    aurora: Object.freeze({key: 'aurora', name: 'AURORA', model: 'ARC-01 · LIGHT RUNNER', flavor: 'Lights up the lane.'}),
+    comet: Object.freeze({key: 'comet', name: 'COMET', model: 'BRN-02 · BREAKAWAY', flavor: 'First into the opening.'}),
+    vector: Object.freeze({key: 'vector', name: 'VECTOR', model: 'VEC-03 · ANGLE FINDER', flavor: 'Finds the line, locks it in.'}),
+    orbit: Object.freeze({key: 'orbit', name: 'ORBIT', model: 'ORB-04 · COOL SPIN', flavor: 'Calm in every turn.'}),
+    pulse: Object.freeze({key: 'pulse', name: 'PULSE', model: 'PLS-05 · RHYTHM CORE', flavor: 'Never misses a beat.'}),
+    sentry: Object.freeze({key: 'sentry', name: 'SENTRY', model: 'SNT-06 · SIGNAL GUARD', flavor: 'Keeps the channel clear.'})
+  });
+  const DRONE_ART = Object.freeze({
+    aurora: '<svg class="drone-art" viewBox="0 0 120 76" aria-hidden="true" focusable="false"><path class="drone-trail" d="M11 57C32 57 34 43 49 38"/><path class="drone-wing" d="M20 48 49 32 43 53 18 58Z"/><path class="drone-wing" d="M67 30 104 19 82 43 62 45Z"/><path class="drone-shell" d="M40 49 57 19 79 30 68 51 51 57Z"/><path class="drone-frame" d="m55 37 11-9 8 8-10 10Z"/><circle class="drone-core" cx="64" cy="35" r="4"/><path class="drone-accent" d="m28 57 19-4-5 7Z"/></svg>',
+    comet: '<svg class="drone-art" viewBox="0 0 120 76" aria-hidden="true" focusable="false"><path class="drone-trail" d="M8 48c19-4 27 0 46-11"/><path class="drone-trail" d="M15 57c17-4 25-1 43-13"/><path class="drone-wing" d="m37 40 25-24 5 17-17 15Z"/><path class="drone-shell" d="m43 48 28-26 21 14-28 21Z"/><path class="drone-frame" d="m63 37 12-8 8 6-13 10Z"/><circle class="drone-core" cx="75" cy="36" r="4"/><path class="drone-wing" d="m64 54 31-4-18 15-23-6Z"/><path class="drone-accent" d="m42 50-13 13 23-7Z"/></svg>',
+    vector: '<svg class="drone-art" viewBox="0 0 120 76" aria-hidden="true" focusable="false"><path class="drone-trail" d="M16 16 43 37 16 58"/><path class="drone-wing" d="m25 37 35-27-4 23-21 9Z"/><path class="drone-wing" d="m26 38 31 28-3-23-20-8Z"/><path class="drone-shell" d="m44 37 27-19 30 19-29 19Z"/><path class="drone-frame" d="m65 37 12-9 13 9-13 9Z"/><circle class="drone-core" cx="77" cy="37" r="4"/><path class="drone-accent" d="m91 30 17 7-17 8Z"/></svg>',
+    orbit: '<svg class="drone-art" viewBox="0 0 120 76" aria-hidden="true" focusable="false"><path class="drone-trail" d="M15 51c3-28 42-42 74-23 13 8 14 22 5 31"/><path class="drone-wing" d="m29 50 21-31 8 20-14 20Z"/><path class="drone-wing" d="m63 35 26-19-4 23-18 12Z"/><path class="drone-shell" d="m42 50 16-27 26 7 1 25-24 5Z"/><path class="drone-frame" d="m56 42 13-10 10 8-11 12Z"/><circle class="drone-core" cx="68" cy="40" r="4"/><path class="drone-accent" d="m76 57 24 3-17 8Z"/></svg>',
+    pulse: '<svg class="drone-art" viewBox="0 0 120 76" aria-hidden="true" focusable="false"><path class="drone-trail" d="M9 46h15l6-12 10 25 12-32 9 19h17"/><path class="drone-wing" d="m47 36 14-26 11 21-11 14Z"/><path class="drone-wing" d="m42 43 13 22 13-22-13-9Z"/><path class="drone-shell" d="m49 42 15-19 26 9 1 21-26 8Z"/><path class="drone-frame" d="m65 42 11-8 8 7-10 9Z"/><circle class="drone-core" cx="76" cy="41" r="4"/><path class="drone-accent" d="m84 32 20 8-18 6Z"/></svg>',
+    sentry: '<svg class="drone-art" viewBox="0 0 120 76" aria-hidden="true" focusable="false"><path class="drone-trail" d="M20 15v46M10 38h25"/><path class="drone-wing" d="m28 27 29-15-8 24-19 7Z"/><path class="drone-wing" d="m29 48 27 17-8-24-18-7Z"/><path class="drone-shell" d="m44 38 19-24 29 16-17 26-27-4Z"/><path class="drone-frame" d="m60 38 12-11 10 9-11 12Z"/><circle class="drone-core" cx="72" cy="37" r="4"/><path class="drone-accent" d="m85 22 18-2-10 14Z"/></svg>'
+  });
+  const DEFAULT_DRONE_KEY = 'aurora';
+  const DRONE_PREFERENCE_KEY = 'ascent-versus-drone-v1';
+
   const config = Object.freeze({
     url: String(window.ASCENT_MULTIPLAYER?.url || '').replace(/\/$/, ''),
     anonKey: String(window.ASCENT_MULTIPLAYER?.anonKey || '')
@@ -59,6 +78,7 @@
   const $ = id => document.getElementById(id);
   const screens = ['config','entry','lobby','round','results'];
   let session = readSession();
+  let selectedDroneKey = readDronePreference();
   let roomState = null;
   let syncTimer = null;
   let clockTimer = null;
@@ -122,6 +142,90 @@
 
   function cleanRoomCode(value) {
     return String(value || '').toUpperCase().replace(/[^A-Z2-9]/g, '').slice(0, 6);
+  }
+
+  function droneFor(key) {
+    return DRONES[String(key || '').toLowerCase()] || DRONES[DEFAULT_DRONE_KEY];
+  }
+
+  function readDronePreference() {
+    try {
+      return droneFor(localStorage.getItem(DRONE_PREFERENCE_KEY)).key;
+    } catch (error) {
+      return DEFAULT_DRONE_KEY;
+    }
+  }
+
+  function storeDronePreference(key) {
+    try { localStorage.setItem(DRONE_PREFERENCE_KEY, droneFor(key).key); } catch (error) {}
+  }
+
+  function droneSvg(key) {
+    return DRONE_ART[droneFor(key).key];
+  }
+
+  function renderDronePicker() {
+    const picker = $('dronePicker');
+    if (!picker) return;
+    const fragment = document.createDocumentFragment();
+    Object.values(DRONES).forEach(drone => {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'drone-card';
+      button.dataset.drone = drone.key;
+      button.dataset.droneKey = drone.key;
+      button.setAttribute('aria-pressed', 'false');
+      button.setAttribute('aria-label', `Choose ${drone.name}, ${drone.model}. ${drone.flavor} Cosmetic only.`);
+      button.innerHTML = `<span class="drone-stage">${droneSvg(drone.key)}</span><span class="drone-copy"><span class="drone-name">${drone.name}</span><span class="drone-model">${drone.model}</span></span><span class="drone-flavor">${drone.flavor}</span><span class="drone-picked">SELECTED</span>`;
+      button.addEventListener('click', () => selectDrone(drone.key));
+      fragment.appendChild(button);
+    });
+    picker.replaceChildren(fragment);
+    updateDronePicker();
+  }
+
+  function updateDronePicker() {
+    const drone = droneFor(selectedDroneKey);
+    document.querySelectorAll('.drone-card[data-drone-key]').forEach(button => {
+      const selected = button.dataset.droneKey === drone.key;
+      button.classList.toggle('is-selected', selected);
+      button.setAttribute('aria-pressed', String(selected));
+    });
+    const note = $('droneSelectionNote');
+    if (note) note.textContent = `${drone.name} SELECTED · ${drone.model} · “${drone.flavor}”`;
+  }
+
+  function selectDrone(key) {
+    selectedDroneKey = droneFor(key).key;
+    storeDronePreference(selectedDroneKey);
+    updateDronePicker();
+  }
+
+  function renderDroneBadge(target, key) {
+    if (!target) return;
+    const drone = droneFor(key);
+    target.className = 'pilot-badge';
+    target.dataset.drone = drone.key;
+    target.setAttribute('aria-hidden', 'true');
+    target.innerHTML = droneSvg(drone.key);
+  }
+
+  function renderEmptyDroneBadge(target) {
+    if (!target) return;
+    target.className = 'pilot-badge pilot-badge--empty';
+    target.removeAttribute('data-drone');
+    target.setAttribute('aria-hidden', 'true');
+    target.textContent = '…';
+  }
+
+  function playerDrone(player) {
+    const localPilot = player?.id && player.id === roomState?.you?.id ? session?.pilotKey : null;
+    return droneFor(player?.pilot_key || localPilot);
+  }
+
+  function playerIdentity(player, fallback) {
+    if (!player) return fallback;
+    return `${String(player.name || '').toUpperCase()} · ${playerDrone(player).name}`;
   }
 
   function readSession() {
@@ -299,16 +403,27 @@
       const player = players[index];
       const item = document.createElement('li');
       item.className = player ? `player-slot connected${player.is_connected === false ? ' reconnecting' : ''}` : 'player-slot';
-      const marker = document.createElement('span');
-      marker.className = 'player-marker';
-      marker.textContent = player ? String(index + 1).padStart(2, '0') : '…';
+      const badge = document.createElement('span');
       const copy = document.createElement('div');
+      copy.className = 'player-copy';
       const name = document.createElement('strong');
       const note = document.createElement('small');
-      name.textContent = player ? player.name.toUpperCase() : 'WAITING FOR PLAYER';
-      note.textContent = player ? (player.is_connected === false ? 'SIGNAL LOST / RECONNECTING' : player.is_host ? 'HOST / FLIGHT CONTROL' : 'CONNECTED / READY') : 'SHARE THE SIX-CHARACTER ROOM CODE';
-      copy.append(name, note);
-      item.append(marker, copy);
+      const callsign = document.createElement('span');
+      callsign.className = 'player-callsign';
+      if (player) {
+        const drone = playerDrone(player);
+        renderDroneBadge(badge, drone.key);
+        name.textContent = playerIdentity(player, 'PILOT');
+        note.textContent = player.is_connected === false ? 'SIGNAL LOST / RECONNECTING' : player.is_host ? 'HOST / FLIGHT CONTROL' : 'CONNECTED / READY';
+        callsign.textContent = `${drone.model} · ${drone.flavor.toUpperCase()}`;
+      } else {
+        renderEmptyDroneBadge(badge);
+        name.textContent = 'WAITING FOR PLAYER';
+        note.textContent = 'SHARE THE SIX-CHARACTER ROOM CODE';
+        callsign.textContent = 'AN OPEN FLIGHT BAY IS WAITING.';
+      }
+      copy.append(name, note, callsign);
+      item.append(badge, copy);
       slots.appendChild(item);
     }
   }
@@ -341,8 +456,10 @@
     $('roundNumber').textContent = `ROUND ${String(roomState.round_number).padStart(2, '0')}`;
     $('roundCategory').textContent = category?.title || roomState.category_title || 'CATEGORY SIGNAL';
     $('roundHint').textContent = category?.hint || roomState.category_hint || 'Name as many accepted words as you can.';
-    $('yourName').textContent = self?.name?.toUpperCase() || 'YOU';
-    $('opponentName').textContent = other?.name?.toUpperCase() || 'OPPONENT';
+    if (self) renderDroneBadge($('yourDrone'), playerDrone(self).key); else renderEmptyDroneBadge($('yourDrone'));
+    if (other) renderDroneBadge($('opponentDrone'), playerDrone(other).key); else renderEmptyDroneBadge($('opponentDrone'));
+    $('yourName').textContent = playerIdentity(self, 'YOU');
+    $('opponentName').textContent = playerIdentity(other, 'OPPONENT');
     $('yourScore').textContent = String(self?.round_score || 0).padStart(2, '0');
     $('opponentScore').textContent = String(other?.round_score || 0).padStart(2, '0');
     renderChips($('liveAnswers'), [...localAnswerKeys]);
@@ -358,8 +475,10 @@
     const headline = ownRound === otherRound ? 'DEAD<br><em>EVEN.</em>' : ownRound > otherRound ? 'YOU TOOK<br><em>THE ROUND.</em>' : 'THEY TOOK<br><em>THE ROUND.</em>';
     $('resultHeadline').innerHTML = headline;
     $('resultRound').textContent = `ROUND ${String(roomState.round_number).padStart(2, '0')} · ${CATEGORIES[roomState.category_key]?.title || roomState.category_title || 'CATEGORY'}`;
-    $('resultYouName').textContent = self?.name?.toUpperCase() || 'YOU';
-    $('resultOpponentName').textContent = other?.name?.toUpperCase() || 'OPPONENT';
+    if (self) renderDroneBadge($('resultYouDrone'), playerDrone(self).key); else renderEmptyDroneBadge($('resultYouDrone'));
+    if (other) renderDroneBadge($('resultOpponentDrone'), playerDrone(other).key); else renderEmptyDroneBadge($('resultOpponentDrone'));
+    $('resultYouName').textContent = playerIdentity(self, 'YOU');
+    $('resultOpponentName').textContent = playerIdentity(other, 'OPPONENT');
     $('resultYouScore').textContent = String(ownRound).padStart(2, '0');
     $('resultOpponentScore').textContent = String(otherRound).padStart(2, '0');
     $('resultTotal').textContent = `TOTAL · ${String(self?.score || 0).padStart(2, '0')} — ${String(other?.score || 0).padStart(2, '0')}`;
@@ -475,19 +594,20 @@
     setStatus('OPENING A ROOM…');
     try {
       const playerSecret = makePlayerSecret();
+      const drone = droneFor(selectedDroneKey);
       let next = null;
       let lastError = null;
       for (let attempt = 0; attempt < 6 && !next; attempt++) {
         const roomCode = makeRoomCode();
         try {
-          next = await rpc('ascent_create_room', {p_room_code: roomCode, p_player_name: name, p_player_secret: playerSecret});
+          next = await rpc('ascent_create_room', {p_room_code: roomCode, p_player_name: name, p_player_secret: playerSecret, p_pilot_key: drone.key});
         } catch (error) {
           lastError = error;
           if (!/duplicate|unique/i.test(friendlyError(error))) throw error;
         }
       }
       if (!next) throw lastError || new Error('Could not reserve a room code.');
-      storeSession({roomCode: next.room_code, playerSecret, playerName: name});
+      storeSession({roomCode: next.room_code, playerSecret, playerName: name, pilotKey: drone.key});
       startRealtime();
       renderState(next);
       pokeRealtime();
@@ -512,8 +632,9 @@
     setStatus('JOINING ROOM…');
     try {
       const playerSecret = makePlayerSecret();
-      const next = await rpc('ascent_join_room', {p_room_code: roomCode, p_player_name: name, p_player_secret: playerSecret});
-      storeSession({roomCode: next.room_code, playerSecret, playerName: name});
+      const drone = droneFor(selectedDroneKey);
+      const next = await rpc('ascent_join_room', {p_room_code: roomCode, p_player_name: name, p_player_secret: playerSecret, p_pilot_key: drone.key});
+      storeSession({roomCode: next.room_code, playerSecret, playerName: name, pilotKey: drone.key});
       startRealtime();
       renderState(next);
       pokeRealtime();
@@ -630,6 +751,7 @@
   }
 
   function init() {
+    renderDronePicker();
     wireEvents();
     scheduleClock();
     if (!configIsReady()) {
@@ -648,6 +770,8 @@
 
   window.ASCENT_VERSUS_DEBUG = Object.freeze({
     CATEGORIES,
+    DRONES,
+    droneFor,
     normaliseWord,
     resolveWord,
     makeRoomCode,

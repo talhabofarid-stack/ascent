@@ -40,6 +40,7 @@ create table if not exists public.ascent_versus_players (
   id uuid primary key default gen_random_uuid(),
   room_id uuid not null references public.ascent_versus_rooms(id) on delete cascade,
   player_name text not null check (char_length(player_name) between 2 and 18),
+  pilot_key text not null default 'aurora' check (pilot_key in ('aurora', 'comet', 'vector', 'orbit', 'pulse', 'sentry')),
   player_secret_hash text not null unique check (char_length(player_secret_hash) = 64),
   is_host boolean not null default false,
   total_score integer not null default 0 check (total_score >= 0),
@@ -143,6 +144,7 @@ begin
   select coalesce(jsonb_agg(jsonb_build_object(
     'id', p.id,
     'name', p.player_name,
+    'pilot_key', p.pilot_key,
     'is_host', p.is_host,
     'is_connected', p.last_seen_at >= now() - interval '12 seconds',
     'score', p.total_score,
@@ -177,14 +179,14 @@ begin
     'round_starts_at', v_room.round_starts_at,
     'round_ends_at', v_room.round_ends_at,
     'server_now', now(),
-    'you', jsonb_build_object('id', v_player.id, 'name', v_player.player_name, 'is_host', v_player.is_host),
+    'you', jsonb_build_object('id', v_player.id, 'name', v_player.player_name, 'pilot_key', v_player.pilot_key, 'is_host', v_player.is_host),
     'players', v_players,
     'answers', v_answers
   );
 end;
 $$;
 
-create or replace function public.ascent_create_room(p_room_code text, p_player_name text, p_player_secret text)
+create or replace function public.ascent_create_room(p_room_code text, p_player_name text, p_player_secret text, p_pilot_key text)
 returns jsonb
 language plpgsql
 security definer
@@ -192,6 +194,7 @@ set search_path = public, extensions
 as $$
 declare
   v_room_id uuid;
+  v_pilot_key text;
 begin
   perform public.ascent_cleanup_expired_rooms();
 
@@ -204,19 +207,23 @@ begin
   if char_length(p_player_secret) < 32 then
     raise exception 'Invalid local room credential.';
   end if;
+  v_pilot_key := lower(trim(coalesce(p_pilot_key, '')));
+  if v_pilot_key not in ('aurora', 'comet', 'vector', 'orbit', 'pulse', 'sentry') then
+    raise exception 'Choose one of the available flight drones.';
+  end if;
 
   insert into public.ascent_versus_rooms (room_code)
   values (upper(trim(p_room_code)))
   returning id into v_room_id;
 
-  insert into public.ascent_versus_players (room_id, player_name, player_secret_hash, is_host)
-  values (v_room_id, trim(p_player_name), encode(digest(p_player_secret, 'sha256'), 'hex'), true);
+  insert into public.ascent_versus_players (room_id, player_name, pilot_key, player_secret_hash, is_host)
+  values (v_room_id, trim(p_player_name), v_pilot_key, encode(digest(p_player_secret, 'sha256'), 'hex'), true);
 
   return public.ascent_room_state(upper(trim(p_room_code)), p_player_secret);
 end;
 $$;
 
-create or replace function public.ascent_join_room(p_room_code text, p_player_name text, p_player_secret text)
+create or replace function public.ascent_join_room(p_room_code text, p_player_name text, p_player_secret text, p_pilot_key text)
 returns jsonb
 language plpgsql
 security definer
@@ -225,12 +232,17 @@ as $$
 declare
   v_room public.ascent_versus_rooms%rowtype;
   v_existing_player uuid;
+  v_pilot_key text;
 begin
   if char_length(trim(p_player_name)) not between 2 and 18 then
     raise exception 'Choose a name between 2 and 18 characters.';
   end if;
   if char_length(p_player_secret) < 32 then
     raise exception 'Invalid local room credential.';
+  end if;
+  v_pilot_key := lower(trim(coalesce(p_pilot_key, '')));
+  if v_pilot_key not in ('aurora', 'comet', 'vector', 'orbit', 'pulse', 'sentry') then
+    raise exception 'Choose one of the available flight drones.';
   end if;
 
   select * into v_room
@@ -257,8 +269,8 @@ begin
     raise exception 'That room already has two players.';
   end if;
 
-  insert into public.ascent_versus_players (room_id, player_name, player_secret_hash, is_host)
-  values (v_room.id, trim(p_player_name), encode(digest(p_player_secret, 'sha256'), 'hex'), false);
+  insert into public.ascent_versus_players (room_id, player_name, pilot_key, player_secret_hash, is_host)
+  values (v_room.id, trim(p_player_name), v_pilot_key, encode(digest(p_player_secret, 'sha256'), 'hex'), false);
 
   return public.ascent_room_state(v_room.room_code, p_player_secret);
 end;
@@ -466,16 +478,16 @@ $$;
 
 revoke all on function public.ascent_cleanup_expired_rooms() from public;
 revoke all on function public.ascent_room_state(text, text) from public;
-revoke all on function public.ascent_create_room(text, text, text) from public;
-revoke all on function public.ascent_join_room(text, text, text) from public;
+revoke all on function public.ascent_create_room(text, text, text, text) from public;
+revoke all on function public.ascent_join_room(text, text, text, text) from public;
 revoke all on function public.ascent_start_round(text, text) from public;
 revoke all on function public.ascent_submit_answer(text, text, integer, text) from public;
 revoke all on function public.ascent_leave_room(text, text) from public;
 revoke all on function public.ascent_close_room(text, text) from public;
 
 grant execute on function public.ascent_room_state(text, text) to anon;
-grant execute on function public.ascent_create_room(text, text, text) to anon;
-grant execute on function public.ascent_join_room(text, text, text) to anon;
+grant execute on function public.ascent_create_room(text, text, text, text) to anon;
+grant execute on function public.ascent_join_room(text, text, text, text) to anon;
 grant execute on function public.ascent_start_round(text, text) to anon;
 grant execute on function public.ascent_submit_answer(text, text, integer, text) to anon;
 grant execute on function public.ascent_leave_room(text, text) to anon;
