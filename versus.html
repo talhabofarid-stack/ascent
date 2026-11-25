@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#050915">
+<meta name="description" content="ASCENT Versus Sprint: simultaneous category-word races using a room code.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="shortcut icon" href="favicon.svg" type="image/svg+xml">
+<title>Versus Sprint · ASCENT</title>
+<style>
+:root{--ink:#f6f8ff;--soft:#b7c8dc;--dim:#7e93ad;--cyan:#81eaf0;--red:#ff5871;--orange:#ffd29e;--glass:#091a31e8;--line:#cce9ff31;--font:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}*{box-sizing:border-box}html{min-width:320px;background:#030815}body{min-height:100vh;margin:0;overflow-x:hidden;background:radial-gradient(ellipse at 20% 0%,#15345f 0,transparent 39%),radial-gradient(ellipse at 91% 88%,#30204d 0,transparent 42%),#030815;color:var(--ink);font-family:var(--font)}body:before,body:after{content:"";position:fixed;inset:0;pointer-events:none}body:before{opacity:.58;background-image:radial-gradient(circle at 6% 22%,#fff 0 1px,transparent 1.5px),radial-gradient(circle at 18% 68%,#c9f5ff 0 1px,transparent 1.5px),radial-gradient(circle at 46% 13%,#fff 0 1px,transparent 1.5px),radial-gradient(circle at 69% 38%,#9deeff 0 1px,transparent 1.5px),radial-gradient(circle at 86% 17%,#fff 0 1px,transparent 1.5px),radial-gradient(circle at 93% 70%,#d4f7ff 0 1px,transparent 1.5px);background-size:210px 210px,260px 260px,310px 310px,230px 230px,350px 350px,400px 400px}body:after{background:linear-gradient(180deg,transparent,#02071280 76%,#020712db)}a{color:inherit}button,input{font:inherit}button{cursor:pointer}button:disabled{cursor:not-allowed;opacity:.5}.is-hidden{display:none!important}.shell{position:relative;z-index:1;width:min(1130px,calc(100% - 40px));margin:0 auto;padding:25px 0 50px}.topbar{display:flex;align-items:center;justify-content:space-between;gap:20px;padding-bottom:23px;border-bottom:1px solid #d9f3ff1f}.brand{display:inline-flex;align-items:center;gap:10px;text-decoration:none;font-size:23px;font-weight:950;letter-spacing:.15em}.brand-mark{display:inline-grid;place-items:center;width:25px;height:25px;color:var(--red);font-size:27px;line-height:1;transform:translateY(-1px)}.brand small{color:var(--red);font-size:11px;align-self:flex-start;margin-top:1px}.back{color:#d9eff5;font-size:10px;font-weight:900;letter-spacing:.14em;text-decoration:none}.back:hover{color:var(--cyan)}.layout{display:grid;grid-template-columns:minmax(260px,.78fr) minmax(0,1.22fr);gap:44px;align-items:start;padding-top:68px}.hero{padding:22px 0}.eyebrow{display:flex;align-items:center;gap:10px;color:var(--cyan);font-size:10px;font-weight:950;letter-spacing:.19em}.eyebrow:before{content:"";width:29px;height:1px;background:currentColor;box-shadow:0 0 10px currentColor}.hero h1{margin:17px 0 20px;font-size:clamp(55px,7.3vw,105px);line-height:.82;letter-spacing:-.09em}.hero h1 em,.panel h2 em,#resultHeadline em{color:var(--red);font-style:normal}.hero p{max-width:360px;color:var(--soft);font-size:16px;line-height:1.65}.rules{display:grid;gap:9px;margin:28px 0 0;padding:0;list-style:none}.rules li{display:flex;align-items:center;gap:10px;color:#aac1d2;font-size:11px;font-weight:800;letter-spacing:.09em}.rules b{display:grid;place-items:center;width:24px;height:24px;border:1px solid #93edf05d;color:var(--cyan);font-size:10px}.panel{min-height:460px;padding:31px;border:1px solid var(--line);background:linear-gradient(140deg,#0b1d35f5,#061225e8);box-shadow:0 35px 100px #0008,inset 0 1px #ffffff0c;backdrop-filter:blur(16px)}.panel-overline{display:flex;justify-content:space-between;gap:10px;color:var(--cyan);font-size:9px;font-weight:950;letter-spacing:.17em}.panel-overline span:last-child{color:#a8bed1;text-align:right}.panel h2{margin:20px 0 13px;font-size:clamp(31px,4vw,48px);line-height:.9;letter-spacing:-.075em}.panel-copy{max-width:520px;margin:0 0 24px;color:#b7c7d8;font-size:14px;line-height:1.65}.setup-note{border-left:2px solid var(--red);padding:6px 0 6px 15px;color:#d0ddec;font-size:13px;line-height:1.6}.setup-note code{color:var(--cyan);font-weight:800}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}.room-form{border:1px solid #caeaff25;background:#020b1d76;padding:18px}.room-form h3{margin:0 0 7px;font-size:15px;letter-spacing:-.02em}.room-form p{min-height:42px;margin:0 0 14px;color:#95aec2;font-size:11px;line-height:1.5}.field{display:block;margin:10px 0}.field span{display:block;margin-bottom:6px;color:#94adbf;font-size:8px;font-weight:950;letter-spacing:.15em}.field input{width:100%;height:47px;border:1px solid #a8dbe546;background:#06162bc9;color:#f8fcff;padding:0 12px;font-size:13px;outline:none}.field input:focus{border-color:var(--cyan);box-shadow:0 0 0 3px #75e7f018}.field input::placeholder{color:#7890a6}.room-code-input{font-size:19px!important;font-weight:950!important;letter-spacing:.19em;text-transform:uppercase}.primary-button,.outline-button{display:inline-flex;align-items:center;justify-content:center;gap:12px;min-height:50px;border:0;padding:0 17px;font-size:10px;font-weight:950;letter-spacing:.13em}.primary-button{background:var(--red);color:#fff;box-shadow:0 12px 28px #ff506039}.primary-button:hover:not(:disabled){background:#ff7487;transform:translateY(-1px)}.primary-button b{font-size:18px;font-weight:400}.outline-button{border:1px solid #bdebf06d;background:#06162b92;color:#e7f7fb}.outline-button:hover:not(:disabled){border-color:var(--cyan);background:#0a2941}.room-form .primary-button{width:100%}.or{display:flex;align-items:center;justify-content:center;margin:15px 0;color:#7890a8;font-size:9px;font-weight:950;letter-spacing:.17em}.or:before,.or:after{content:"";height:1px;flex:1;background:#cce9ff21}.or:before{margin-right:9px}.or:after{margin-left:9px}.status{min-height:22px;margin:17px 0 0;color:#a9c8d7;font-size:10px;font-weight:900;letter-spacing:.08em;line-height:1.4}.status[data-tone="error"]{color:#ff9eaa}.status[data-tone="success"]{color:#8ff2e7}.status.is-empty{visibility:hidden}.room-code-card{display:flex;align-items:stretch;gap:10px;margin:24px 0;border:1px solid #8cecef50;background:#041226ac}.room-code{display:grid;place-items:center;flex:1;min-height:86px;color:#f9feff;font-size:clamp(31px,5vw,52px);font-weight:950;letter-spacing:.14em}.copy-code{width:110px;border:0;border-left:1px solid #8cecef50;background:#0d3147;color:var(--cyan);font-size:9px;font-weight:950;letter-spacing:.12em}.copy-code:hover{background:#12435d}.player-slots{display:grid;gap:9px;margin:0;padding:0;list-style:none}.player-slot{display:flex;align-items:center;gap:12px;min-height:66px;border:1px dashed #b9eafa31;padding:11px;color:#728ba0}.player-slot.connected{border-style:solid;border-color:#b9eafa52;color:#f1fbff;background:#071b3180}.player-slot.reconnecting{border-color:#ffb39065;background:#24192973;color:#ffd8cc}.player-slot.reconnecting .player-marker{color:#ffb390}.player-marker{display:grid;place-items:center;flex:0 0 auto;width:31px;height:31px;border:1px solid currentColor;font-size:10px;font-weight:950}.player-slot strong,.player-slot small{display:block}.player-slot strong{font-size:11px;letter-spacing:.08em}.player-slot small{margin-top:4px;font-size:8px;font-weight:800;letter-spacing:.1em}.lobby-actions{display:flex;align-items:center;gap:12px;margin-top:22px}.lobby-actions .primary-button{flex:1}.lobby-guest-note{color:#9fb7c7;font-size:10px;font-weight:850;letter-spacing:.1em;line-height:1.55}.leave{border:0;background:transparent;color:#90a9bb;font-size:9px;font-weight:900;letter-spacing:.12em}.leave:hover{color:#ff9eaa}.round-header{display:flex;justify-content:space-between;gap:15px;align-items:flex-start}.round-category{margin:12px 0 7px;font-size:clamp(31px,4.5vw,52px);line-height:.9;letter-spacing:-.07em}.round-hint{margin:0;color:#b7c8d9;font-size:13px;line-height:1.55}.timer-block{min-width:83px;padding:9px 0 0;text-align:right}.timer-block strong{display:block;color:var(--orange);font-size:46px;line-height:.8;letter-spacing:-.08em}.timer-block small{display:block;margin-top:7px;color:#9ab5c7;font-size:8px;font-weight:950;letter-spacing:.16em}.round-state{margin:22px 0 13px;color:var(--cyan);font-size:9px;font-weight:950;letter-spacing:.15em}.score-duel{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:0 0 14px}.score-card{border:1px solid #c7eefe31;background:#0310249c;padding:13px}.score-card small{display:block;overflow:hidden;color:#9bb5c9;font-size:8px;font-weight:950;letter-spacing:.13em;text-overflow:ellipsis;white-space:nowrap}.score-card strong{display:block;margin-top:5px;font-size:30px;letter-spacing:-.06em}.score-card:first-child strong{color:var(--cyan)}.answer-row{display:flex;gap:8px}.answer-row input{min-width:0;flex:1;height:55px;border:1px solid #b6e8ed66;background:#06162a;color:#fff;padding:0 14px;font-size:16px;outline:none}.answer-row input:focus{border-color:var(--cyan);box-shadow:0 0 0 3px #7beef01a}.answer-row .primary-button{min-width:111px}.answer-list{display:flex;flex-wrap:wrap;gap:6px;min-height:44px;margin:14px 0 0;padding:0;list-style:none}.answer-list li{border:1px solid #92e8e74d;background:#0e2b3f8f;color:#c6ffff;padding:5px 7px;font-size:9px;font-weight:850;letter-spacing:.06em}.round-foot{margin:11px 0 0;color:#829caf;font-size:9px;line-height:1.5}.result-scoreboard{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:25px 0 10px}.result-score{border:1px solid #caedee36;background:#0413269d;padding:14px}.result-score small{display:block;color:#93b1c3;font-size:8px;font-weight:950;letter-spacing:.12em}.result-score strong{display:block;margin-top:6px;font-size:38px;letter-spacing:-.07em}.result-score:first-child strong{color:var(--cyan)}.result-total{margin:0 0 20px;color:#f5d9b4;font-size:10px;font-weight:950;letter-spacing:.15em}.answers-reveal{display:grid;grid-template-columns:1fr 1fr;gap:10px}.answers-reveal h3{margin:0 0 8px;color:#acc8d8;font-size:9px;letter-spacing:.14em}.answers-reveal .answer-list{min-height:75px;margin:0;padding:11px;border:1px solid #cbeefa25;background:#020d1d73}.result-actions{display:flex;align-items:center;gap:13px;margin-top:23px}.result-actions .primary-button{flex:1}.result-guest-note{color:#9eb6c7;font-size:10px;font-weight:850;letter-spacing:.1em;line-height:1.5}.info-line{display:flex;align-items:center;gap:8px;margin-top:17px;color:#88a1b4;font-size:9px;line-height:1.5}.info-line:before{content:"";width:6px;height:6px;background:var(--cyan);box-shadow:0 0 12px var(--cyan)}.footer{margin-top:52px;border-top:1px solid #d9f3ff1f;padding-top:17px;color:#8099ac;font-size:9px;font-weight:850;letter-spacing:.13em}.footer a{color:#bceef2;text-decoration:none}.footer a:hover{color:var(--cyan)}@media(max-width:790px){.shell{width:min(100% - 30px,620px);padding-top:18px}.topbar{padding-bottom:17px}.brand{font-size:18px}.layout{display:block;padding-top:25px}.hero{padding:0 0 23px}.hero h1{font-size:62px}.hero p{font-size:14px}.rules{display:none}.panel{min-height:0;padding:22px 18px}.form-grid{grid-template-columns:1fr}.room-form p{min-height:0}.round-category{font-size:37px}.timer-block strong{font-size:39px}.room-code-card{margin:18px 0}.room-code{font-size:35px}.copy-code{width:85px}.answers-reveal{grid-template-columns:1fr}.result-actions,.lobby-actions{align-items:stretch;flex-direction:column}.leave{min-height:36px}.footer{margin-top:30px}}@media(max-width:390px){.shell{width:calc(100% - 24px)}.topbar{gap:10px}.back{font-size:8px}.hero h1{font-size:54px}.panel{padding:20px 14px}.primary-button,.outline-button{font-size:9px}.answer-row .primary-button{min-width:87px;padding:0 10px}.round-category{font-size:32px}.timer-block{min-width:65px}.timer-block strong{font-size:35px}}
+</style>
+</head>
+<body data-screen="config">
+<main class="shell">
+  <header class="topbar">
+    <a class="brand" href="index.html" aria-label="Back to ASCENT"><span class="brand-mark" aria-hidden="true">↗</span>ASCENT<small>✦</small></a>
+    <a class="back" href="index.html">SOLO FLIGHT ↗</a>
+  </header>
+
+  <div class="layout">
+    <section class="hero" aria-labelledby="versusTitle">
+      <p class="eyebrow">TWO PILOTS · ONE CLOCK</p>
+      <h1 id="versusTitle">VERSUS<br><em>SPRINT.</em></h1>
+      <p>Open a room, share six characters, and race your opponent through the same English category. Every accepted word earns one point. Repeats do not.</p>
+      <ul class="rules" aria-label="Versus Sprint rules"><li><b>01</b> TWO PLAYERS / ONE ROOM CODE</li><li><b>02</b> SAME CATEGORY / 25 SECONDS</li><li><b>03</b> MOST VALID WORDS WINS</li></ul>
+    </section>
+
+    <section class="panel" id="configScreen" aria-labelledby="configTitle">
+      <div class="panel-overline"><span>VERSUS SPRINT</span><span>ROOM SIGNAL</span></div>
+      <h2 id="configTitle">ROOM SERVICE<br><em>NOT CONNECTED.</em></h2>
+      <p class="panel-copy">This screen becomes a live two-player room once ASCENT’s Supabase Project URL and public anon key have been connected. No player account, email, or password is needed.</p>
+      <p class="setup-note">The site owner should follow <code>SUPABASE_MULTIPLAYER_SETUP.md</code>, run the included migration, and add only the public browser configuration. Never add a service-role key to this site.</p>
+      <p class="info-line">A room code alone does not expose a player’s local room credential.</p>
+    </section>
+
+    <section class="panel is-hidden" id="entryScreen" aria-labelledby="entryTitle">
+      <div class="panel-overline"><span>VERSUS SPRINT</span><span>ONLINE ROOM</span></div>
+      <h2 id="entryTitle">PICK YOUR<br><em>LAUNCH PAD.</em></h2>
+      <p class="panel-copy">Create a room to receive a code, or enter a friend’s code. Each browser keeps only its own temporary room credential.</p>
+      <div class="form-grid">
+        <form class="room-form" id="createForm">
+          <h3>OPEN A ROOM</h3>
+          <p>Generate a code and wait for one opponent.</p>
+          <label class="field"><span>YOUR DISPLAY NAME</span><input id="createName" maxlength="18" autocomplete="nickname" placeholder="PILOT NAME" required></label>
+          <button class="primary-button" id="createRoomButton" type="submit"><span>CREATE ROOM</span><b>↗</b></button>
+        </form>
+        <form class="room-form" id="joinForm">
+          <h3>JOIN A ROOM</h3>
+          <p>Use the exact six-character code from your opponent.</p>
+          <label class="field"><span>YOUR DISPLAY NAME</span><input id="joinName" maxlength="18" autocomplete="nickname" placeholder="PILOT NAME" required></label>
+          <label class="field"><span>ROOM CODE</span><input class="room-code-input" id="joinCode" maxlength="6" autocomplete="off" autocapitalize="characters" placeholder="ABC234" required></label>
+          <button class="outline-button" id="joinRoomButton" type="submit">JOIN SPRINT ↗</button>
+        </form>
+      </div>
+      <p class="status is-empty" id="versusStatus" aria-live="polite"></p>
+    </section>
+
+    <section class="panel is-hidden" id="lobbyScreen" aria-labelledby="lobbyTitle">
+      <div class="panel-overline"><span>FLIGHT CONTROL</span><span>LOBBY OPEN</span></div>
+      <h2 id="lobbyTitle">SHARE THIS<br><em>ROOM CODE.</em></h2>
+      <p class="panel-copy">Your opponent enters this code on their own device. The host starts once both pilots are connected.</p>
+      <div class="room-code-card"><strong class="room-code" id="roomCode">------</strong><button class="copy-code" id="roomCodeCopy" type="button" data-code="">COPY CODE</button></div>
+      <ol class="player-slots" id="lobbyPlayers"></ol>
+      <div class="lobby-actions"><button class="primary-button" id="startSprintButton" type="button" disabled><span>WAITING FOR OPPONENT</span><b>↗</b></button><p class="lobby-guest-note" id="lobbyGuestNote">WAITING FOR THE HOST TO SHARE THIS ROOM.</p><button class="leave" id="leaveRoomButton" type="button">LEAVE ROOM</button></div>
+      <p class="status is-empty" id="lobbyStatus" aria-live="polite"></p>
+    </section>
+
+    <section class="panel is-hidden" id="roundScreen" aria-labelledby="roundCategory">
+      <div class="round-header"><div><div class="panel-overline"><span id="roundNumber">ROUND 01</span><span>LIVE SPRINT</span></div><h2 class="round-category" id="roundCategory">FACIAL EXPRESSIONS</h2><p class="round-hint" id="roundHint">Angry, happy, surprised … name an emotion or expression.</p></div><div class="timer-block" aria-live="polite"><strong id="roundTimer">25</strong><small id="roundTimerLabel">SECONDS</small></div></div>
+      <p class="round-state" id="roundStateText">TYPE A WORD · PRESS ENTER · KEEP MOVING</p>
+      <div class="score-duel"><div class="score-card"><small id="yourName">YOU</small><strong id="yourScore">00</strong></div><div class="score-card"><small id="opponentName">OPPONENT</small><strong id="opponentScore">00</strong></div></div>
+      <form id="answerForm" autocomplete="off"><div class="answer-row"><input id="sprintAnswer" maxlength="48" autocapitalize="none" autocomplete="off" spellcheck="false" placeholder="TYPE A WORD…" required><button class="primary-button" id="answerSubmit" type="submit">LOCK +1</button></div></form>
+      <ol class="answer-list" id="liveAnswers" aria-label="Your accepted answers"></ol>
+      <p class="round-foot">Only words in the displayed category count. Your rejected typing stays on this device; only accepted words are sent to the room service.</p>
+      <p class="status is-empty" id="roundStatus" aria-live="polite"></p>
+    </section>
+
+    <section class="panel is-hidden" id="resultsScreen" aria-labelledby="resultHeadline">
+      <div class="panel-overline"><span id="resultRound">ROUND 01</span><span>SPRINT REPORT</span></div>
+      <h2 id="resultHeadline">YOU TOOK<br><em>THE ROUND.</em></h2>
+      <div class="result-scoreboard"><div class="result-score"><small id="resultYouName">YOU</small><strong id="resultYouScore">00</strong></div><div class="result-score"><small id="resultOpponentName">OPPONENT</small><strong id="resultOpponentScore">00</strong></div></div>
+      <p class="result-total" id="resultTotal">TOTAL · 00 — 00</p>
+      <div class="answers-reveal"><div><h3>YOUR WORDS</h3><ol class="answer-list" id="resultYourAnswers"></ol></div><div><h3>OPPONENT WORDS</h3><ol class="answer-list" id="resultOpponentAnswers"></ol></div></div>
+      <div class="result-actions"><button class="primary-button" id="nextSprintButton" type="button"><span>NEXT CATEGORY</span><b>↗</b></button><p class="result-guest-note" id="resultGuestNote">HOST IS ARMING THE NEXT SPRINT.</p><button class="leave" id="leaveResultRoomButton" type="button">LEAVE ROOM</button></div>
+      <p class="status is-empty" id="resultStatus" aria-live="polite"></p>
+    </section>
+  </div>
+
+  <p class="footer">ASCENT VERSUS SPRINT · <a href="privacy.html">PRIVACY</a> · ACCEPTED WORDS ONLY · NO ANALYTICS ANSWER EVENTS</p>
+</main>
+<script src="multiplayer-config.js"></script>
+<script src="versus.js"></script>
+</body>
+</html>
